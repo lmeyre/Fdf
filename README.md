@@ -1,1 +1,1 @@
-# Fdf
+# Fdf On renvoit le nombre de colonne calculé grace a la premiere ligne. Possible qu'on nous passe une fausse map ou la premiere ligne fait 15  colonne et la deuxieme != ? Peut etre meme n'est ce pas une fausse map
