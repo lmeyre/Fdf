@@ -1,0 +1,1 @@
+faire strsplit et la width = au nombre de case mieux pour ger si plusieurs space ou si chiffre comme 42
