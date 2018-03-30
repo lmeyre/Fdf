@@ -6,7 +6,7 @@
 /*   By: lmeyre <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/28 18:42:03 by lmeyre            #+#    #+#             */
-/*   Updated: 2018/03/28 22:16:08 by lmeyre           ###   ########.fr       */
+/*   Updated: 2018/03/30 20:42:01 by lmeyre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int			get_map_dimension(int fd)
 	if (dimension == 0)
 	{
 		get_next_line(fd, &str);
-		dimension = ft_strlen(str);
+		dimension = ft_strlen_c(str, ' ');
 		ft_strdel(&str);
 		return (dimension);
 	}
@@ -46,16 +46,13 @@ static void			get_map_value(int **array ,int fd)
 	i = 0;
 	while (get_next_line(fd, &str))
 	{
-		ft_printf("debut\n");
 		tab = ft_strsplit(str, ' ');
 		while (tab[i])
 		{
-			ft_printf("loopi\n");
 			array[j][i] = ft_atoi(tab[i]);
 			++i;
 		}
 		free(tab);
-		ft_printf("dBIGGGGG\n");
 		++j;
 		ft_strdel(&str);
 		i = 0;
@@ -70,12 +67,11 @@ int			**read_map(t_env *env, char **argv)
 	fd = open(argv[1], O_RDONLY);
 	env->map_width = get_map_dimension(fd);
 	env->map_height = get_map_dimension(fd);
-	if (!(array = (int**)ft_2d_array(env->map_width,
-								env->map_height , sizeof(int))))
+	if (!(array = (int**)ft_2d_array(env->map_height,
+								env->map_width, sizeof(int))))
 		return (NULL);
 	close(fd);
 	fd = open(argv[1], O_RDONLY);
 	get_map_value(array, fd);
-	ft_printf("FIN D GET MAP\n");
 	return (array);
 }

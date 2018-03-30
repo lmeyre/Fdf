@@ -9,6 +9,8 @@ t_env       *initialize_env(void)
     env->array = NULL;
     env->map_width = 0;
     env->map_height = 0;
+	env->mlx_ptr = NULL;
+	env->win_ptr = NULL;
 
     return (env);
 }
