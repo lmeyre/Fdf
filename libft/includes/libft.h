@@ -132,6 +132,7 @@ int					ft_sqrt(int nb);
 void				ft_swap(int *a, int *b);
 int					ft_tolower(int c);
 int					ft_toupper(int c);
+int					ft_word_nbr(const char *s, char c);
 
 void				**ft_2d_array(int width, int lenght, int size_type);
 void				ft_bzero(void *s, size_t n);

@@ -20,7 +20,7 @@ static void diff_bres_value(t_env *env)
     ltl = ((env->src_x < env->dest_x) ? env->src_x : env->dest_x);
 
 }
-
+// il faut le scale X pour le sens
 void    ft_bresenham(t_env *env)
 {
     env->diff_x = 

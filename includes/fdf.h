@@ -12,13 +12,14 @@ typedef struct      s_env
 	int				win_height;
 	void			*mlx_ptr;
 	void			*win_ptr;
-	int				dest_x;
-	int				dest_y;
-	int				src_x;
-	int				src_y;
-	int				diff_x;
-	int				diff_y;
-	int				path;
+	int				pt1_x;
+	int				pt2_y;
+	int				pt1_x;
+	int				pt2_y;
+	int				dx;
+	int				dy;
+	int				scale_x;
+	int				scale_y;
 	int				fault;
 
 }                   t_env;

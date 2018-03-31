@@ -12,35 +12,6 @@
 
 #include "includes/libft.h"
 
-static int			words_nbr(const char *s, char c)
-{
-	int i;
-	int count;
-	int boool;
-
-	boool = 1;
-	count = 0;
-	i = 0;
-	while (s[i] == c)
-		i++;
-	while (s[i])
-	{
-		if (s[i] != c)
-		{
-			i++;
-			boool == 1 ? count++ : boool;
-			boool == 1 ? boool-- : boool;
-		}
-		else if (s[i] == c)
-		{
-			boool = 1;
-			while (s[i] == c)
-				i++;
-		}
-	}
-	return (count);
-}
-
 static char			**ft_tab(char **tab, char const *s, int k, int c)
 {
 	int i;

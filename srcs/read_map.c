@@ -16,12 +16,13 @@ static int			get_map_dimension(int fd)
 {
 	static int	dimension;
 	char		*str;
+	char		**tab;
 
 	// gerer si gnl renvoit 0;
 	if (dimension == 0)
 	{
 		get_next_line(fd, &str);
-		dimension = ft_strlen_c(str, ' ');
+		dimension = ft_word_nbr(str, ' '); // on a modif ici
 		ft_strdel(&str);
 		return (dimension);
 	}

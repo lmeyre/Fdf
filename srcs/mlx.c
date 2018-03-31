@@ -14,7 +14,7 @@
 
 static void	mlx_window_size(t_env *env)
 {
-	if (env->map_width <= 10) // melange normal car les colonne du tableau sont en largeurs
+	if (env->map_width <= 10) // melange normal car les colonne du tableau sont en largeurs , on a regler le soucis 
 		env->win_width = env->map_width * 100;
 	else if (env->map_width <= 20)
 		env->win_width = env->map_width * 70;
