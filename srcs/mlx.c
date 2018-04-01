@@ -46,33 +46,70 @@ static void mlx_map_point(t_env *env)
 
 	i = 0;
 	j = 0;
-	while(i < env->map_width) // I = X
+	while(i < env->map_height) // I = =Y
 	{
-		while (j < env->map_height) // J = Y
+		//ft_printf("lst lenght = %d\n", LST->lenght);
+		while (j < LST->lenght) // J = X
 		{
-			printf("i = %d et j = %d\n",i, j );
-			mlx_pixel_put(env->mlx_ptr, env->win_ptr, (i * 10) + 10, (j * 10) + 10, 0xFFFFFF); // premier param est la largeur et le deuxieme la hauteur
-			
-			env->pt1_x = env->pt2_x;
-			env->pt1_y = env->pt2_y;
-			env->pt2_x = i;
-			env->pt2_y = j;
-			++j; // et verifier la position de cette incrementation
-			if (i != 0 && j != 0)// verifier ca
-				ft_bresenham(env);
-			
+			mlx_pixel_put(env->mlx_ptr, env->win_ptr, (j * 10) + 10, (i * 10) + 10, 0xFFFFFF); // premier param est la largeur et le deuxieme la hauteur
+			++j;
 		}
+		if (env->lst->next)
+			env->lst = env->lst->next;
 		++i;
 		j = 0;
 	}
+	while (env->lst->prev)
+		env->lst = env->lst->prev;
+}
+// NE JAMAIS PARCOURIR LE TABLEAU INT ** EN VERIFIANT QUIL EXISTE CAR INT faire un pomme f verifier quon verifie jamais si env->array existe
+static	void	mlx_join_point(t_env *env) // on va faire , on parcourst tout les point et pour chqaue point on fait un lien avec celui qui est en bas + a droite
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (i < env->map_height) // i = y
+	{
+		while (j < LST->lenght) // j=  x
+		{
+			if ((j + 1) < LST->lenght)
+			{
+				env->pt1_x = j;
+				env->pt1_y = i;
+				env->pt2_x = j + 1;
+				env->pt2_y = i;
+				ft_printf("on appelle bresen entre le point X1 = %d et Y1 = %d ET X2 = %d et Y2 = %d\n", env->pt1_x, env->pt1_y, env->pt2_x, env->pt2_y);
+				ft_bresenham(env);
+			}
+			if ((i + 1) < env->map_height && (env->lst->next && (j < ((t_valist*)(env->lst->next->content))->lenght))) // bien verifier celle la particluierement
+			{
+				env->pt1_x = j;
+				env->pt1_y = i;
+				env->pt2_x = j;
+				env->pt2_y = i + 1;
+				ft_printf("on appelle bresen entre le point X1 = %d et Y1 = %d ET X2 = %d et Y2 = %d\n", env->pt1_x, env->pt1_y, env->pt2_x, env->pt2_y);
+				ft_bresenham(env);
+			}
+			++j;
+		}
+		if (env->lst->next)
+			env->lst = env->lst->next;
+		++i;
+		j = 0;
+	}
+	while (env->lst->prev)
+		env->lst = env->lst->prev;
 }
 
 int			mlx_fdf(t_env *env)
 {
 	env->mlx_ptr = mlx_init();
-	ft_printf("widht = %d et height = %d\n", env->map_width, env->map_height);
+	//ft_printf("widht = %d et height = %d\n", env->map_width, env->map_height);
 	mlx_window_size(env);
 	mlx_map_point(env);
+	mlx_join_point(env);
 	//env->win_ptr = mlx_new_window(env->mlx_ptr, 800, 800, "try");
 	//mlx_pixel_put(env->mlx_ptr, env->win_ptr, 600, 400, 0xFFFFFFF);
 	//mlx_key_hook(env->win_ptr, test, (void*)0);

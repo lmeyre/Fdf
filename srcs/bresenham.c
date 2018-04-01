@@ -10,7 +10,7 @@ static void bres_trace(t_env *env)
     
     curr_x = env->pt1_x * 10; //le 10 devrait etre une variable ils aussi utiliser dans mlx
     curr_y = env->pt1_y * 10;
-    printf("curr x at start = %d et curr y at start = %d pt1y = %d et pt2_y = %d pt1x = %d et pt2x = %d\n", curr_x, curr_y, env->pt1_y, env->pt2_y, env->pt1_x, env->pt2_x);
+   // printf("curr x at start = %d et curr y at start = %d pt1y = %d et pt2_y = %d pt1x = %d et pt2x = %d\n", curr_x, curr_y, env->pt1_y, env->pt2_y, env->pt1_x, env->pt2_x);
     while (1)
     {
         if (curr_x == env->pt2_x * 10 && curr_y == env->pt2_y * 10)
@@ -18,7 +18,7 @@ static void bres_trace(t_env *env)
         mlx_pixel_put(env->mlx_ptr, env->win_ptr, (curr_x + 10), (curr_y + 10), 0xFFFFFF);
         if (env->path == 1)
         {
-            ft_printf("ici\n");
+    //        ft_printf("ici\n");
             ++curr_x;
             env->fault -= env->dy;
             if (env->fault < 0) // et egal ? si on a bug tester avec
@@ -29,7 +29,7 @@ static void bres_trace(t_env *env)
         }
         else
         {
-            ft_printf("et la\n");
+        //    ft_printf("et la\n");
             ++curr_y;
             env->fault *= env->dx;
             if (env->fault < 0) // et egal ? si on a bug tester avec
@@ -55,6 +55,6 @@ static void diff_bres_value(t_env *env)
 void    ft_bresenham(t_env *env)
 {
     diff_bres_value(env);
-    ft_printf("dx = %d et dy = %d\n", env->dx, env->dy);
+   // ft_printf("dx = %d et dy = %d\n", env->dx, env->dy);
     bres_trace(env);
 }

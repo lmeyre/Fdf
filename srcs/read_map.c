@@ -12,30 +12,54 @@
 
 #include "../includes/fdf.h"
 
-static int			get_map_dimension(int fd)
+static int			get_map_dimension(char **argv, t_env *env)
 {
-	static int	dimension;
 	char		*str;
+	int			fd;
+	t_list		*tmplst;
+	int			link;
 
-	// gerer si gnl renvoit 0;
-	if (dimension == 0)
-	{
-		get_next_line(fd, &str);
-		dimension = ft_word_nbr(str, ' ');
-		ft_strdel(&str);
-		return (dimension);
-	}
-	dimension = 1;
+	env->tmp = 0;
+	link = 0;
+	fd = open(argv[1], O_RDONLY);
 	while (get_next_line(fd, &str))
 	{
-		++dimension;
+		++(env->map_height);
 		ft_strdel(&str);
 	}
-	ft_strdel(&str);
-	return (dimension);
+	close(fd);
+	fd = open(argv[1], O_RDONLY);
+	if (!(env->array = (int**)malloc(sizeof(int*) * (env->map_height))))
+		return (0);
+	while (get_next_line(fd, &str))
+	{
+		env->map_width = ft_word_nbr(str, ' ');
+	//	ft_printf("largeur de cette ligne = %d, la ligne = |%s|\n", ft_word_nbr(str, ' '), str);
+		if (!(env->array[env->tmp] = (int*)malloc(sizeof(int*) * env->map_width)))
+			return (0);
+		++env->tmp;
+		if (!(env->lst))
+		{
+			if (!(env->lst = ft_lst_new(sizeof(t_valist*))))
+				return (0);
+			LST->link = 0;
+			LST->lenght = env->map_width;
+		}
+		else
+		{
+			tmplst = ft_lst_new(sizeof(t_valist*));
+			((t_valist*)(tmplst->content))->link = link;
+			((t_valist*)(tmplst->content))->lenght = env->map_width; 
+			ft_lst_add_end(&env->lst, tmplst);
+		}
+		++link;
+		ft_strdel(&str);
+	}
+	close(fd);// verifier quon close bien et quon sort pas avant des fois au cas ou
+	return (1);
 }
 
-static void			get_map_value(int **array ,int fd)
+static void			get_map_value(int fd, t_env *env)
 {
 	int		i;
 	int		j;
@@ -49,7 +73,7 @@ static void			get_map_value(int **array ,int fd)
 		tab = ft_strsplit(str, ' ');
 		while (tab[i])
 		{
-			array[j][i] = ft_atoi(tab[i]);
+			env->array[j][i] = ft_atoi(tab[i]);
 			++i;
 		}
 		free(tab);
@@ -59,19 +83,13 @@ static void			get_map_value(int **array ,int fd)
 	}
 }
 
-int			**read_map(t_env *env, char **argv)
+int			read_map(t_env *env, char **argv)
 {
-	int **array;
 	int	fd;
 
+	if (!(get_map_dimension(argv, env)))
+		return (0);
 	fd = open(argv[1], O_RDONLY);
-	env->map_width = get_map_dimension(fd);
-	env->map_height = get_map_dimension(fd);
-	if (!(array = (int**)ft_2d_array(env->map_height,
-								env->map_width, sizeof(int))))
-		return (NULL);
-	close(fd);
-	fd = open(argv[1], O_RDONLY);
-	get_map_value(array, fd);
-	return (array);
+	get_map_value(fd, env);
+	return (1);
 }

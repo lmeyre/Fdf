@@ -2,10 +2,12 @@
 # define FDF_H
 # include "mlx.h"
 # include "../libft/includes/libft.h"
+# define LST ((t_valist*)(env->lst->content))
 
 typedef struct      s_env
 {
 	int				**array;
+	t_list			*lst;
 	int				map_width;
 	int				map_height;
 	int				win_width;
@@ -22,14 +24,21 @@ typedef struct      s_env
 	int				scale_y;
 	int				fault;
 	int				path;
+	int				tmp;
 
 }                   t_env;
+
+typedef struct		s_valist
+{
+	int				link;
+	int				lenght;
+}					t_valist;
 
 t_env       *initialize_env(void);
 
 int		test(void);
 
-int			**read_map(t_env *env, char **argv);
+int			read_map(t_env *env, char **argv);
 int			fdf(t_env *env);
 int			mlx_fdf(t_env *env);
 void    	ft_bresenham(t_env *env);
