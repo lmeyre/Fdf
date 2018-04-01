@@ -43,6 +43,8 @@ static void mlx_map_point(t_env *env)
 {
 	int i;
 	int j;
+	int	val_x;
+	int	val_y;
 
 	i = 0;
 	j = 0;
@@ -51,8 +53,11 @@ static void mlx_map_point(t_env *env)
 		//ft_printf("lst lenght = %d\n", LST->lenght);
 		while (j < LST->lenght) // J = X
 		{
-			mlx_pixel_put(env->mlx_ptr, env->win_ptr, (j * 10) + 10, (i * 10) + 10, 0xFFFFFF); // premier param est la largeur et le deuxieme la hauteur
-			++j;
+			val_x = j * SPACING;
+			val_y = i * SPACING;
+				mlx_pixel_put(env->mlx_ptr, env->win_ptr, val_x - val_y + DECALE, (val_y + val_x) / 2 + DECALE - (env->array[i][j] * 2), 0xFFFFFF); // le * 10 et + 100 sont a voir precisement, car arbitraires ||  le *2 aussi
+			++j;	
+			printf("on a mit x a %d et y a %d\n", val_x - val_y + DECALE, (val_y + val_x) / 2 + DECALE - (env->array[i][j] * 2));									  // X - Y                   (Y + X) / 2
 		}
 		if (env->lst->next)
 			env->lst = env->lst->next;
@@ -62,11 +67,13 @@ static void mlx_map_point(t_env *env)
 	while (env->lst->prev)
 		env->lst = env->lst->prev;
 }
-// NE JAMAIS PARCOURIR LE TABLEAU INT ** EN VERIFIANT QUIL EXISTE CAR INT faire un pomme f verifier quon verifie jamais si env->array existe
+
 static	void	mlx_join_point(t_env *env) // on va faire , on parcourst tout les point et pour chqaue point on fait un lien avec celui qui est en bas + a droite
 {
 	int i;
 	int j;
+	int val_x;
+	int val_y;
 
 	i = 0;
 	j = 0;
@@ -74,22 +81,24 @@ static	void	mlx_join_point(t_env *env) // on va faire , on parcourst tout les po
 	{
 		while (j < LST->lenght) // j=  x
 		{
+			val_x = j * SPACING;
+			val_y = i * SPACING;
 			if ((j + 1) < LST->lenght)
 			{
-				env->pt1_x = j;
-				env->pt1_y = i;
-				env->pt2_x = j + 1;
-				env->pt2_y = i;
-				ft_printf("on appelle bresen entre le point X1 = %d et Y1 = %d ET X2 = %d et Y2 = %d\n", env->pt1_x, env->pt1_y, env->pt2_x, env->pt2_y);
+				env->pt1_x = val_x - val_y + DECALE;
+				env->pt1_y = (val_y + val_x) / 2 + DECALE  - (env->array[i][j] * 2); // !!!
+				env->pt2_x = ((j + 1) * SPACING)  - val_y + DECALE;
+				env->pt2_y = (val_y + (j + 1) * SPACING) / 2 + DECALE  - (env->array[i][j + 1] * 2);
+				//ft_printf("on appelle bresen entre le point X1 = %d et Y1 = %d ET X2 = %d et Y2 = %d\n", env->pt1_x, env->pt1_y, env->pt2_x, env->pt2_y);
 				ft_bresenham(env);
 			}
 			if ((i + 1) < env->map_height && (env->lst->next && (j < ((t_valist*)(env->lst->next->content))->lenght))) // bien verifier celle la particluierement
 			{
-				env->pt1_x = j;
-				env->pt1_y = i;
-				env->pt2_x = j;
-				env->pt2_y = i + 1;
-				ft_printf("on appelle bresen entre le point X1 = %d et Y1 = %d ET X2 = %d et Y2 = %d\n", env->pt1_x, env->pt1_y, env->pt2_x, env->pt2_y);
+				env->pt1_x = val_x - val_y + DECALE;
+				env->pt1_y = (val_y + val_x) / 2 + DECALE - (env->array[i][j] * 2);
+				env->pt2_x = val_x - ((i + 1) * SPACING) + DECALE;
+				env->pt2_y = ((i + 1) * SPACING + val_x) / 2 + DECALE - (env->array[i + 1][j] * 2);
+				///ft_printf("on appelle bresen entre le point X1 = %d et Y1 = %d ET X2 = %d et Y2 = %d\n", env->pt1_x, env->pt1_y, env->pt2_x, env->pt2_y);
 				ft_bresenham(env);
 			}
 			++j;
@@ -110,9 +119,6 @@ int			mlx_fdf(t_env *env)
 	mlx_window_size(env);
 	mlx_map_point(env);
 	mlx_join_point(env);
-	//env->win_ptr = mlx_new_window(env->mlx_ptr, 800, 800, "try");
-	//mlx_pixel_put(env->mlx_ptr, env->win_ptr, 600, 400, 0xFFFFFFF);
-	//mlx_key_hook(env->win_ptr, test, (void*)0);
 	mlx_loop(env->mlx_ptr);
 
 	return (1);

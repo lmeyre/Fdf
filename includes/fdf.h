@@ -3,6 +3,8 @@
 # include "mlx.h"
 # include "../libft/includes/libft.h"
 # define LST ((t_valist*)(env->lst->content))
+# define DECALE 100
+# define SPACING 10
 
 typedef struct      s_env
 {
