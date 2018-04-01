@@ -14,7 +14,7 @@
 
 static void	mlx_window_size(t_env *env)
 {
-	if (env->map_width <= 10) // melange normal car les colonne du tableau sont en largeurs , on a regler le soucis 
+/*	if (env->map_width <= 10) // melange normal car les colonne du tableau sont en largeurs , on a regler le soucis 
 		env->win_width = env->map_width * 100;
 	else if (env->map_width <= 20)
 		env->win_width = env->map_width * 70;
@@ -34,9 +34,9 @@ static void	mlx_window_size(t_env *env)
 	else if (env->map_height <= 100)
 		env->win_height = env->map_height * 20;
 	else
-		env->win_height = env->map_height * 10;
+		env->win_height = env->map_height * 10;*/
 
-	env->win_ptr = mlx_new_window(env->mlx_ptr, env->win_width, env->win_height, "fdf");// a proteger ?
+	env->win_ptr = mlx_new_window(env->mlx_ptr, /*env->win_width*/500, /*env->win_height*/500, "fdf");// a proteger ?
 }
 
 static void mlx_map_point(t_env *env)
@@ -46,12 +46,21 @@ static void mlx_map_point(t_env *env)
 
 	i = 0;
 	j = 0;
-	while(i < env->map_width)
+	while(i < env->map_width) // I = X
 	{
-		while (j < env->map_height)
+		while (j < env->map_height) // J = Y
 		{
-			mlx_pixel_put(env->mlx_ptr, env->win_ptr, i * 100 + 10, j * 100 + 10, 0xFFFFFF); // premier param est la largeur et le deuxieme la hauteur
-			++j;
+			printf("i = %d et j = %d\n",i, j );
+			mlx_pixel_put(env->mlx_ptr, env->win_ptr, (i * 10) + 10, (j * 10) + 10, 0xFFFFFF); // premier param est la largeur et le deuxieme la hauteur
+			
+			env->pt1_x = env->pt2_x;
+			env->pt1_y = env->pt2_y;
+			env->pt2_x = i;
+			env->pt2_y = j;
+			++j; // et verifier la position de cette incrementation
+			if (i != 0 && j != 0)// verifier ca
+				ft_bresenham(env);
+			
 		}
 		++i;
 		j = 0;

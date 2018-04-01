@@ -6,7 +6,7 @@
 /*   By: lmeyre <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/13 18:28:36 by lmeyre            #+#    #+#             */
-/*   Updated: 2018/03/30 20:50:30 by lmeyre           ###   ########.fr       */
+/*   Updated: 2018/03/31 17:42:48 by lmeyre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void				ft_swap_str(char *a, char *b);
 char				*ft_toupper_str(char *str);
 char				*ft_strtrim(char const *s);
 
+int					ft_abs(int i);
 int					ft_atoi(const char *str);
 void				ft_display_file(int argc, char **argv);
 int					ft_int_length(long long int i);

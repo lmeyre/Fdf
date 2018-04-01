@@ -6,7 +6,7 @@
 /*   By: lmeyre <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 18:03:00 by lmeyre            #+#    #+#             */
-/*   Updated: 2018/01/25 16:18:12 by lmeyre           ###   ########.fr       */
+/*   Updated: 2018/03/31 17:35:10 by lmeyre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char				**ft_strsplit(char const *s, char c)
 
 	if (!(s))
 		return (0);
-	if (!(tab = (char**)ft_memalloc(sizeof(char*) * (words_nbr(s, c) + 1))))
+	if (!(tab = (char**)ft_memalloc(sizeof(char*) * (ft_word_nbr(s, c) + 1))))
 		return (0);
 	tab = ft_tab(tab, s, 0, c);
 	return (tab);
