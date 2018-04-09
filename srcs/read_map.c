@@ -18,6 +18,7 @@ static int			get_map_dimension(char **argv, t_env *env)
 	int			fd;
 	t_list		*tmplst;
 	int			link;
+	int			width;
 
 	env->tmp = 0;
 	link = 0;
@@ -33,8 +34,9 @@ static int			get_map_dimension(char **argv, t_env *env)
 		return (0);
 	while (get_next_line(fd, &str))
 	{
-		env->map_width = ft_word_nbr(str, ' ');
-		if (!(env->array[env->tmp] = (int*)malloc(sizeof(int*) * env->map_width)))
+		width = ft_word_nbr(str, ' ');
+		env->map_width = (width > env->map_width ? width : env->map_width);
+		if (!(env->array[env->tmp] = (int*)malloc(sizeof(int*) * width)))
 			return (0);
 		++env->tmp;
 		if (!(env->lst))
@@ -42,13 +44,13 @@ static int			get_map_dimension(char **argv, t_env *env)
 			if (!(env->lst = ft_lst_new(sizeof(t_valist*))))
 				return (0);
 			LST->link = 0;
-			LST->lenght = env->map_width;
+			LST->lenght = width;
 		}
 		else
 		{
 			tmplst = ft_lst_new(sizeof(t_valist*));
 			((t_valist*)(tmplst->content))->link = link;
-			((t_valist*)(tmplst->content))->lenght = env->map_width; 
+			((t_valist*)(tmplst->content))->lenght = width; 
 			ft_lst_add_end(&env->lst, tmplst);
 		}
 		++link;

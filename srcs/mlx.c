@@ -136,6 +136,7 @@ int			mlx_fdf(t_env *env)
 	//ft_printf("decale x = %d et y = %d, win width = %d et win height = %d, map width = %d et map height = %d, valeur soustraite = %d, et total = %d\n", env->decale_x, env->decale_y,env->win_width, env->win_height, env->map_width, env->map_height, env->map_width * env->spacing / 2, (env->win_width / 2) - (env->map_width * env->spacing / 2));
 	//mlx_map_point(env);
 	mlx_join_point(env);
+	mlx_pixel_put(env->mlx_ptr, env->win_ptr, 10, env->win_height / 2, 0xFFFFFF);
 	mlx_key_hook(env->win_ptr, fdf_key, env);
 	mlx_loop(env->mlx_ptr);
 

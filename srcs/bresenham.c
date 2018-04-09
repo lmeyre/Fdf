@@ -66,15 +66,12 @@ void    ft_bresenham(t_env *env)
     {
         val_x = env->map_width * env->spacing;
         val_y = env->map_height * env->spacing;
-        ft_printf("decale x = %d et decale y = %d\n", env->decale_x, env->decale_y);
-        env->add_x = env->win_width / 2 - ((val_x / 2 - val_y / 2)); // rajouter scale X si soucis
-	    env->add_y = (env->win_height / 2) - ((val_y / 2) - ((val_x / 2)) / 2);
-
-     //   ft_printf("add x = %d et add y = %d, pt1 x = %d\n", env->add_x, env->add_y, env->pt1_x);
-       // ft_printf("win width = %d height = %d\n", env->win_width, env->win_height);
+        ft_printf("scal x = %d et scale y = %d\n", env->scale_x, env->scale_y);
+        env->add_x = env->win_width / 2 - ((val_x / 2 - val_y / 2)); // rajouter scale X si soucis, en fait je crois que scale X a rien a voir du tout avec tout ca
+	    env->add_y = env->win_height / 2 - ((val_y / 2) + ((val_x / 2)) / 2);
         x = env->spacing;
     }
-            env->pt1_x += env->add_x;
+        env->pt1_x += env->add_x;
         env->pt2_x += env->add_x;
         env->pt1_y += env->add_y;
         env->pt2_y += env->add_y;
