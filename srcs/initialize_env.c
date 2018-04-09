@@ -1,4 +1,4 @@
-#include "../includes/fdf.h"
+#include "fdf.h"
 
 t_env       *initialize_env(void)
 {
@@ -16,14 +16,20 @@ t_env       *initialize_env(void)
     env->pt2_x = 0;
     env->pt1_y = 0;
     env->pt2_y = 0;
+    env->add_x = 0;
+    env->add_y = 0;
     env->dx = 0;
     env->dy = 0;
+    env->decale_x = 0;
+    env->decale_y = 0;
+    env->spacing = 10;
+    env->multiply = 1;
     env->scale_x = 0;
     env->scale_y = 0;
     env->fault = 0;
     env->path = 0;
 	env->mlx_ptr = NULL;
 	env->win_ptr = NULL;
-
+    env->tmp = 0;
     return (env);
 }

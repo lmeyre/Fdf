@@ -6,7 +6,7 @@
 /*   By: lmeyre <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/28 16:58:23 by lmeyre            #+#    #+#             */
-/*   Updated: 2018/03/28 18:38:14 by lmeyre           ###   ########.fr       */
+/*   Updated: 2018/04/02 14:39:04 by lmeyre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,4 @@ void	**ft_2d_array(int width, int height, int size_type)
 	}
 	array[count] = NULL;
 	return (array);
-
 }

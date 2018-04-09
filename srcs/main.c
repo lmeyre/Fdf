@@ -1,4 +1,4 @@
-#include "../includes/fdf.h"
+#include "fdf.h"
 
 int		test(void)
 {

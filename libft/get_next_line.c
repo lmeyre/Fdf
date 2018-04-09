@@ -6,7 +6,7 @@
 /*   By: lmeyre <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/27 16:30:41 by lmeyre            #+#    #+#             */
-/*   Updated: 2018/03/30 15:30:38 by lmeyre           ###   ########.fr       */
+/*   Updated: 2018/04/02 14:38:40 by lmeyre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static t_list	*list_check(int fd, t_list *lst,
 		lst = lst->next;
 	if (lst->next == NULL && fd != CNTT->fd)
 	{
-
 		ft_lst_add_end(&lst, ft_lst_new(sizeof(t_fd)));
 		lst = lst->next;
 	}

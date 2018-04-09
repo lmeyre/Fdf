@@ -2,9 +2,12 @@
 # define FDF_H
 # include "mlx.h"
 # include "../libft/includes/libft.h"
+# include "define_fdf.h"
 # define LST ((t_valist*)(env->lst->content))
-# define DECALE 100
-# define SPACING 10
+//# define DECALE 100 // peut etre a remoove
+//# define SPACING 10 // 
+//# define MULTIPLY 5 //
+# define MOOVE_INTENSITY 10
 
 typedef struct      s_env
 {
@@ -22,6 +25,12 @@ typedef struct      s_env
 	int				pt2_y;
 	int				dx;
 	int				dy;
+	int				decale_x;
+	int				decale_y;
+	int				add_x;
+	int				add_y;
+	int				spacing;
+	int				multiply;
 	int				scale_x;
 	int				scale_y;
 	int				fault;
@@ -44,5 +53,8 @@ int			read_map(t_env *env, char **argv);
 int			fdf(t_env *env);
 int			mlx_fdf(t_env *env);
 void    	ft_bresenham(t_env *env);
+int           fdf_key(int key, t_env *env);
+void	mlx_join_point(t_env *env);
+void mlx_map_point(t_env *env);
 
 #endif

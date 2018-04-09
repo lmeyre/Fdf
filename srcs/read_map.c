@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fdf.h"
+#include "fdf.h"
 
 static int			get_map_dimension(char **argv, t_env *env)
 {
@@ -34,7 +34,6 @@ static int			get_map_dimension(char **argv, t_env *env)
 	while (get_next_line(fd, &str))
 	{
 		env->map_width = ft_word_nbr(str, ' ');
-	//	ft_printf("largeur de cette ligne = %d, la ligne = |%s|\n", ft_word_nbr(str, ' '), str);
 		if (!(env->array[env->tmp] = (int*)malloc(sizeof(int*) * env->map_width)))
 			return (0);
 		++env->tmp;
