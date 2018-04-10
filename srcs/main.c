@@ -14,6 +14,7 @@ int main(int argc, char **argv)
 		return (0);
 	env = initialize_env();
 	read_map(env, argv);
+	
 	//ft_rint_tab(env->array, env->map_height, env->map_width);
 	fdf(env);
 

@@ -3,17 +3,66 @@
 
 // on va faire une boucle qui assigne des valeur source X source Y destination X dest Y dans une boucle pour tout les liens qu on veut faire, et dedans on appelle bresenham avec DX DX SX SY
 
+static int fake_trace(t_env *env, int fault, int dx, int dy)
+{
+    int count;
+    int curr_x;
+    int curr_y;
+
+    count = 0;
+    curr_x = env->pt1_x;
+    curr_y = env->pt1_y;
+    while (1)
+    {
+        if (curr_x == env->pt2_x && curr_y == env->pt2_y)
+        {
+           return (count);
+        }
+        if (env->path == 1)
+        {
+            (env->scale_x == 1) ? ++curr_x : --curr_x;
+            fault -= dy;
+            if (fault < 0) // et egal ? si on a bug tester avec
+            {
+                fault += dx;
+                (env->scale_y == 1) ? ++curr_y : --curr_y;
+            }
+        }
+        else
+        {
+            (env->scale_y == 1) ? ++curr_y : --curr_y;
+            fault -= dx;
+            if (fault < 0) // et egal ? si on a bug tester avec
+            {
+                fault += dy;
+                (env->scale_x == 1) ? ++curr_x : --curr_x;
+            }
+        }
+        ++count;
+    }
+}
+
 static void bres_trace(t_env *env)
 {
     int     curr_x;
     int     curr_y;
-    
-    curr_x = env->pt1_x; //le 10 devrait etre une variable ils aussi utiliser dans mlx
+    int     new_color;
+    int     final_color;
+    int     height;
+    int     color_diff;
+
+    curr_x = env->pt1_x;
     curr_y = env->pt1_y;
-   // printf("curr x at start = %d et curr y at start = %d pt1y = %d et pt2_y = %d pt1x = %d et pt2x = %d\n", curr_x, curr_y, env->pt1_y, env->pt2_y, env->pt1_x, env->pt2_x);
+    height = env->spacing * env->multiply;
+    new_color = color_manage(env->start_z * height);
+    final_color = color_manage(env->end_z * height);
+    env->tmp = fake_trace(env, env->fault, env->dx, env->dy);
+    color_diff = ft_abs(new_color - final_color) / env->tmp;
     while (1)
     {
-        if (curr_x == env->pt2_x && curr_y == env->pt2_y )
+        new_color += color_diff;
+        mlx_pixel_put(env->mlx_ptr, env->win_ptr, curr_x, curr_y , final_color);
+        if (curr_x == env->pt2_x && curr_y == env->pt2_y)
         {
            // ft_printf("Un trace de fait\n");
             break ;
@@ -30,7 +79,6 @@ static void bres_trace(t_env *env)
         }
         else
         {
-            //ft_printf("stuckXX?\n");
             (env->scale_y == 1) ? ++curr_y : --curr_y;
             env->fault -= env->dx;
             if (env->fault < 0) // et egal ? si on a bug tester avec
@@ -39,7 +87,6 @@ static void bres_trace(t_env *env)
                 (env->scale_x == 1) ? ++curr_x : --curr_x;
             }
         }
-        mlx_pixel_put(env->mlx_ptr, env->win_ptr, curr_x, curr_y , 0xFFFFFF);
     }
 }
 
@@ -55,21 +102,29 @@ static void diff_bres_value(t_env *env)
    // ft_printf("env paht = %d, scale x = %d, scale y = %d, dx = %d, dy = %d\n", env->path, env->scale_x, env->scale_y, env->dx, env->dy);
 }
 
+static void perfect_center(t_env *env) // si on veut un centre vraiment parfait il faudra faire plus
+{
+    int valx;
+    int valy;
+    int end_x;
+    int end_y;
+
+    valx = ((env->map_width - 1) * env->spacing);
+    valy = ((env->map_height - 1) * env->spacing);
+    end_x = valx - valy;
+    end_y = (valx + valy) / 2;
+    env->add_x = env->win_width / 2 - end_x; // rajouter scale X si soucis, en fait je crois que scale X a rien a voir du tout avec tout ca
+    env->add_y = env->win_height / 2 - end_y;
+   
+}
+
 void    ft_bresenham(t_env *env)
 {
-    static int x = 42;
-    int val_x;
-    int val_y;
-
     diff_bres_value(env);
-    if (x != env->spacing)
+    if (env->center != env->spacing)
     {
-        val_x = env->map_width * env->spacing;
-        val_y = env->map_height * env->spacing;
-        ft_printf("scal x = %d et scale y = %d\n", env->scale_x, env->scale_y);
-        env->add_x = env->win_width / 2 - ((val_x / 2 - val_y / 2)); // rajouter scale X si soucis, en fait je crois que scale X a rien a voir du tout avec tout ca
-	    env->add_y = env->win_height / 2 - ((val_y / 2) + ((val_x / 2)) / 2);
-        x = env->spacing;
+        perfect_center(env);
+        env->center = env->spacing;
     }
         env->pt1_x += env->add_x;
         env->pt2_x += env->add_x;

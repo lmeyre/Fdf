@@ -30,13 +30,13 @@ static int			get_map_dimension(char **argv, t_env *env)
 	}
 	close(fd);
 	fd = open(argv[1], O_RDONLY);
-	if (!(env->array = (int**)malloc(sizeof(int*) * (env->map_height))))
+	if (!(env->array = (int**)malloc(sizeof(int*) * (env->map_height))) || !(env->origin_array = (int**)malloc(sizeof(int*) * (env->map_height))))
 		return (0);
 	while (get_next_line(fd, &str))
 	{
 		width = ft_word_nbr(str, ' ');
 		env->map_width = (width > env->map_width ? width : env->map_width);
-		if (!(env->array[env->tmp] = (int*)malloc(sizeof(int*) * width)))
+		if (!(env->array[env->tmp] = (int*)malloc(sizeof(int*) * width)) || !(env->origin_array[env->tmp] = (int*)malloc(sizeof(int*) * width))) 
 			return (0);
 		++env->tmp;
 		if (!(env->lst))
@@ -66,7 +66,9 @@ static void			get_map_value(int fd, t_env *env)
 	int		j;
 	char	*str;
 	char	**tab;
+	int x;
 
+	x = 42;
 	j = 0;
 	i = 0;
 	while (get_next_line(fd, &str))
@@ -74,7 +76,21 @@ static void			get_map_value(int fd, t_env *env)
 		tab = ft_strsplit(str, ' ');
 		while (tab[i])
 		{
-			env->array[j][i] = ft_atoi(tab[i]);
+			
+			env->tmp = ft_atoi(tab[i]);
+			if (x == 42)
+			{
+				env->map_min = env->tmp;
+				env->map_max = env->tmp;
+				x = 0;
+			}
+			else
+			{
+				env->map_min = (env->tmp < env->map_min ? env->tmp : env->map_min);
+				env->map_max = (env->tmp > env->map_max ? env->tmp : env->map_max);
+			}
+			env->array[j][i] = env->tmp;
+			env->origin_array[j][i] = env->tmp;
 			++i;
 		}
 		free(tab);

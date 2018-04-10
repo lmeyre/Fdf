@@ -1,1 +1,0 @@
-gcc -Wall   -Wextra  -I /usr/local/include  srcs/*.c -L /usr/local/lib/ libft/libft.a -lmlx -framework OpenGL -framework AppKit

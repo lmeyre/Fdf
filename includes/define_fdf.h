@@ -44,10 +44,12 @@
 # define DOWN_ARROW 125
 # define UP_ARROW 126
 
-//# define ARROW 123 || 124 || 125 || 126
-//# define ZOOM 78 || 69
-//# define PAD 83 || 84 || 85 || 86 || 87 || 88 || 89 || 91 || 92
+# define SPACEBAR 49
 
 # define ESC 53
+
+#define RGB(r, g, b)(256 * 256 * (int)(r) + 256 * (int)(g) + (int)(b))
+
+
 
 #endif

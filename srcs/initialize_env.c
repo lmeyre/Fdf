@@ -7,6 +7,7 @@ t_env       *initialize_env(void)
     env = (t_env*)malloc(sizeof(t_env));
     ft_bzero(env, sizeof(t_env));
     env->array = NULL;
+    env->origin_array = NULL;
     env->lst = NULL;
     env->map_width = 0;
     env->map_height = 0;
@@ -31,5 +32,9 @@ t_env       *initialize_env(void)
 	env->mlx_ptr = NULL;
 	env->win_ptr = NULL;
     env->tmp = 0;
+    env->center = 42;
+    env->start_z = 0;
+    env->end_z = 0;
+    // ne pas initialize map min et max
     return (env);
 }

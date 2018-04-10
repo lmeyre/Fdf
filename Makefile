@@ -15,9 +15,11 @@ NAME = fdf
 
 FLAGS = -Wall -Werror -Wextra
 
-SRCS = $(addprefix srcs/, bresenham.c fdf.c initialize_env.c main.c mlx.c read_map.c trigger_hook.c)\
+SRCS = $(addprefix srcs/, bresenham.c fdf.c initialize_env.c main.c mlx.c read_map.c trigger_hook.c util.c animation.c)\
 
 SRCS_DIR = srcs
+
+BINDIR = bin
 
 BIN = $(SRCS:.c=.o)
 
@@ -39,6 +41,7 @@ all: $(NAME)
 
 $(NAME): $(BIN) $(LIB) $(HEADER) $(MAKE)
 	@ gcc $(FLAGS) -I /usr/local/include -o $(NAME) $(BIN) -L /usr/local/lib/ -I $(LIBDIR) -I $(HEADER_DIR) $(LIB) -lmlx -framework OpenGL -framework AppKit
+	@ mv $(BIN) $(BIN_DIR)
 
 %.o: %.c
 	@ gcc $(FLAGS) -o $@ -c $< -I $(HEADER_DIR)
@@ -50,9 +53,11 @@ mc: all clean
 
 visi: $(BIN) $(LIB) $(HEADER) $(MAKE)
 	gcc $(FLAGS) -I /usr/local/include -o $(NAME) $(BIN) -L /usr/local/lib/ -I $(LIBDIR) -I $(HEADER_DIR) $(LIB) -lmlx -framework OpenGL -framework AppKit
+	mv $(BIN) $(BIN_DIR) 
 
 debug: $(BIN) $(LIB) $(HEADER) $(MAKE)
 	@ gcc $(FLAGS) -I /usr/local/include $(DEBUG) -o $(NAME) $(BIN) -L /usr/local/lib/ -I $(LIBDIR) -I $(HEADER_DIR) $(LIB) -lmlx -framework OpenGL -framework AppKit
+	@ mv $(BIN) $(BIN_DIR)
 
 clean:
 	@ rm -f $(BIN)

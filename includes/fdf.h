@@ -12,6 +12,7 @@
 typedef struct      s_env
 {
 	int				**array;
+	int				**origin_array;
 	t_list			*lst;
 	int				map_width;
 	int				map_height;
@@ -36,6 +37,12 @@ typedef struct      s_env
 	int				fault;
 	int				path;
 	int				tmp;
+	int				center;
+	int				color;
+	int				map_min;
+	int				map_max;
+	int				start_z;
+	int				end_z;
 
 }                   t_env;
 
@@ -56,5 +63,8 @@ void    	ft_bresenham(t_env *env);
 int           fdf_key(int key, t_env *env);
 void	mlx_join_point(t_env *env);
 void mlx_map_point(t_env *env);
+void     help_value(int value, t_env *env);
+void    man_write(t_env *env);
+int color_manage(double t);
 
 #endif

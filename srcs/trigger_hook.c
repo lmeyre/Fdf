@@ -44,16 +44,49 @@ static void            key_zoom(int key, t_env *env)
 void            key_height_multiplier(int key, t_env *env)
 {
    // ft_printf("On rentre dans multiplier");
-    if (key == UP_ARROW)
+    if (key == O)
         env->multiply += 1;
-    else if (key == DOWN_ARROW)
+    else if (key == L)
         env->multiply -= 1;
 }
-/*
-void            key_reset(t_env *env)
-{
 
-}*/
+
+
+void            key_height(int key, t_env *env)
+{
+    if (key == UP_ARROW)
+       help_value(1, env);
+    else if (key == DOWN_ARROW)
+        help_value(-1, env);
+}
+
+void            reset_image(t_env *env)
+{
+    int i;
+    int j;
+
+    i = 0;
+    j = 0;
+	while (i < env->map_height)
+	{
+		while (j < LST->lenght)
+		{
+            env->array[i][j] = env->origin_array[i][j];
+			++j;
+		}
+		if (env->lst->next)
+			env->lst = env->lst->next;
+		++i;
+		j = 0;
+	}
+    env->center = 42;
+    env->decale_x = 0;
+    env->decale_y = 0;
+    env->spacing = 10;
+    env->multiply = 1;
+	while (env->lst->prev)
+		env->lst = env->lst->prev;
+}
 
 
 int            fdf_key(int key, t_env *env)
@@ -70,29 +103,28 @@ int            fdf_key(int key, t_env *env)
      //   ft_putendl("22");
         key_moove(key, env);
     }
-    else if (key == UP_ARROW || key == DOWN_ARROW)
+    else if (key == O || key == L)
     {
      //   ft_putendl("3");
         key_height_multiplier(key, env);
+    }
+    else if (key == UP_ARROW || key == DOWN_ARROW)
+    {
+        key_height(key, env);
     }
     else if (key == ESC)
     {
       //  ft_putendl("4");
         exit(0);
     }
-    else if (key == T)
+    else if (key == SPACEBAR)
     {
-     //   ft_putendl("ici");
-        mlx_clear_window(env->mlx_ptr, env->win_ptr);
-    }
-    else if (key == Y)
-    {
-        //ft_putendl("la");
-        mlx_destroy_window(env->mlx_ptr, env->win_ptr);
+        reset_image(env);
     }
 
     mlx_clear_window(env->mlx_ptr, env->win_ptr);
     //mlx_map_point(env);
 	mlx_join_point(env);
+    man_write(env);
     return (0);
 }

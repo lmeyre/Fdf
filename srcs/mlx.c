@@ -86,6 +86,7 @@ void	mlx_join_point(t_env *env) // on va faire , on parcourst tout les point et 
 	int val_y;
 	int height;
 
+	env->tmp = ft_abs(env->map_max) - ft_abs(env->map_min);// remoove
 	if (env->spacing <= 0)
 		env->spacing = 1;
 	height = env->multiply * env->spacing;
@@ -97,13 +98,15 @@ void	mlx_join_point(t_env *env) // on va faire , on parcourst tout les point et 
 		{
 			val_x = j * env->spacing;
 			val_y = i * env->spacing;
+			
 			if ((j + 1) < LST->lenght)
 			{
 				env->pt1_x = val_x - val_y + env->decale_x;
 				env->pt1_y = (val_y + val_x) / 2 + env->decale_y  - (env->array[i][j] * height); // !!!
 				env->pt2_x = ((j + 1) * env->spacing)  - val_y + env->decale_x;
 				env->pt2_y = (val_y + (j + 1) * env->spacing) / 2 + env->decale_y - (env->array[i][j + 1] * height);
-				//ft_printf("on appelle bresen entre le point X1 = %d et Y1 = %d ET X2 = %d et Y2 = %d\n", env->pt1_x, env->pt1_y, env->pt2_x, env->pt2_y);
+				env->start_z = (env->array[i][j]);
+				env->end_z = (env->array[i][j + 1]);
 				ft_bresenham(env);
 			}
 			if ((i + 1) < env->map_height && (env->lst->next && (j < ((t_valist*)(env->lst->next->content))->lenght))) // bien verifier celle la particluierement
@@ -112,7 +115,8 @@ void	mlx_join_point(t_env *env) // on va faire , on parcourst tout les point et 
 				env->pt1_y = (val_y + val_x) / 2 + env->decale_y - (env->array[i][j] * height);
 				env->pt2_x = val_x - ((i + 1) * env->spacing) + env->decale_x;
 				env->pt2_y = ((i + 1) * env->spacing + val_x) / 2 + env->decale_y - (env->array[i + 1][j] * height);
-				///ft_printf("on appelle bresen entre le point X1 = %d et Y1 = %d ET X2 = %d et Y2 = %d\n", env->pt1_x, env->pt1_y, env->pt2_x, env->pt2_y);
+				env->start_z = (env->array[i][j]);
+				env->end_z = (env->array[i + 1][j]);
 				ft_bresenham(env);
 			}
 			++j;
@@ -136,8 +140,9 @@ int			mlx_fdf(t_env *env)
 	//ft_printf("decale x = %d et y = %d, win width = %d et win height = %d, map width = %d et map height = %d, valeur soustraite = %d, et total = %d\n", env->decale_x, env->decale_y,env->win_width, env->win_height, env->map_width, env->map_height, env->map_width * env->spacing / 2, (env->win_width / 2) - (env->map_width * env->spacing / 2));
 	//mlx_map_point(env);
 	mlx_join_point(env);
-	mlx_pixel_put(env->mlx_ptr, env->win_ptr, 10, env->win_height / 2, 0xFFFFFF);
+	mlx_pixel_put(env->mlx_ptr, env->win_ptr, 10, env->win_height / 2, 0xFFFFFF); // enlever ca
 	mlx_key_hook(env->win_ptr, fdf_key, env);
+	man_write(env);
 	mlx_loop(env->mlx_ptr);
 
 	return (1);
