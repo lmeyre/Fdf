@@ -6,7 +6,7 @@
 #    By: lmeyre <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/28 23:00:43 by lmeyre            #+#    #+#              #
-#    Updated: 2018/04/09 18:33:31 by lmeyre           ###   ########.fr        #
+#    Updated: 2018/04/13 07:05:50 by lmeyre           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,7 @@ debug: $(BIN) $(LIB) $(HEADER) $(MAKE)
 	@ mv $(BIN) $(BIN_DIR)
 
 clean:
-	@ rm -f $(BIN)
+	@ rm -f $(BIN_DIR)/$(BIN)
 	@ make clean -C $(LIBDIR)
 
 fclean: clean

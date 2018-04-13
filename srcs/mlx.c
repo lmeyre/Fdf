@@ -194,10 +194,9 @@ int			mlx_fdf(t_env *env)
 	//mlx_map_point(env);
 //	mlx_join_point(env);
 	new_image(env);
-	animate_isometric(env);
+	//animate_isometric(env);
 	mlx_pixel_put(env->mlx_ptr, env->win_ptr, 10, env->win_height / 2, 0xFFFFFF); // enlever ca
 	mlx_key_hook(env->win_ptr, fdf_key, env);
-	man_fdf(env);
 	
 
 	mlx_loop(env->mlx_ptr);

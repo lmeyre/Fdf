@@ -42,28 +42,66 @@ static int fake_trace(t_env *env, int fault, int dx, int dy)
     }
 }
 
+static void manage_color(t_env *env, int height, int *count, int *color)// ptet si on gere mieux les variable au dessus on evitera de refaire les appele de variable en boucle ici et faire lag
+{
+    int     new_color;
+    int     final_color;
+    int     difference;
+    int     amount;
+// SANS DOUTE UN -1 ou +1 A CALER QQ PART
+    new_color = color_manage(env->start_z * height * 7);
+    final_color = color_manage(env->end_z * height * 7);
+    if (new_color == final_color)
+        return ;
+    amount = fake_trace(env, env->fault, env->dx, env->dy);
+    difference = ft_abs(ft_abs(env->start_z) - ft_abs(env->end_z));
+
+    if (*count == amount / difference)
+    {
+        ft_printf("on change de couleur pendant brese\n amount = %d, diff = %d, count = %d\n", amount, difference, *count);
+        if (new_color < final_color)
+        {
+            *color += height;
+        }
+        else
+        {
+            *color -= height;
+        }
+        env->color = color_manage(*color);
+        ft_printf("la couleur augmente de %d et vaut %d\n", height *7, env->color);
+        *count = 0;
+    }
+}
+
 static void bres_trace(t_env *env)
 {
     int     curr_x;
     int     curr_y;
-    int     new_color;
-    int     final_color;
     int     height;
-    int     color_diff;
+    int     count;
+    int     color;
+
+
+  //  int     color_diff;
 
     curr_x = env->pt1_x;
     curr_y = env->pt1_y;
     height = env->spacing * env->multiply;
-    new_color = color_manage(env->start_z * height);
-    final_color = color_manage(env->end_z * height);
-    env->tmp = fake_trace(env, env->fault, env->dx, env->dy);
-    color_diff = ft_abs(new_color - final_color) / (env->tmp +1); // enlever le +1 il sert juste pour un debug pour empecher le diviser par 0 mais on devait pas lavoir
+    /*env->tmp = fake_trace(env, env->fault, env->dx, env->dy);
+    if (new_color == final_color)
+        color_diff = 0;
+    else
+        color_diff = (new_color - final_color) / env->tmp;*/
+        count = 0;
+    color = (env->start_z * height * 7);
+    env->color = color_manage(color);
     while (1)
     {
-        new_color += color_diff;
-        //mlx_pixel_put(env->mlx_ptr, env->win_ptr, curr_x, curr_y , final_color);
-        image_set_pixel(env, curr_x, curr_y, final_color);
-        
+            
+        manage_color(env, height, &count, &color);
+        //new_color += color_diff;
+        //mlx_pixel_put(env->mlx_ptr, env->win_ptr, curr_x, curr_y , env->color);
+        image_set_pixel(env, curr_x, curr_y, env->color);
         if (curr_x == env->pt2_x && curr_y == env->pt2_y)
         {
            // ft_printf("Un trace de fait\n");
@@ -89,6 +127,7 @@ static void bres_trace(t_env *env)
                 (env->scale_x == 1) ? ++curr_x : --curr_x;
             }
         }
+        ++count;
     }
 }
 
