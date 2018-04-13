@@ -35,6 +35,9 @@ t_env       *initialize_env(void)
     env->center = 42;
     env->start_z = 0;
     env->end_z = 0;
+    env->bpp = 0;
+    env->s_l = 0;
+    env->endian = 0;
     // ne pas initialize map min et max
     return (env);
 }

@@ -15,11 +15,11 @@ NAME = fdf
 
 FLAGS = -Wall -Werror -Wextra
 
-SRCS = $(addprefix srcs/, bresenham.c fdf.c initialize_env.c main.c mlx.c read_map.c trigger_hook.c util.c animation.c)\
+SRCS = $(addprefix srcs/, bresenham.c fdf.c initialize_env.c main.c mlx.c read_map.c trigger_hook.c util.c animation.c fdf_image.c)\
 
 SRCS_DIR = srcs
 
-BINDIR = bin
+BIN_DIR = bin
 
 BIN = $(SRCS:.c=.o)
 
@@ -35,7 +35,7 @@ MAKE = Makefile
 
 DEBUG = -g -fsanitize=address
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re mrc little_make visi debug
 
 all: $(NAME)
 
@@ -49,7 +49,11 @@ $(NAME): $(BIN) $(LIB) $(HEADER) $(MAKE)
 $(LIB):
 	@ make -C $(LIBDIR)
 
-mc: all clean
+mrc: little_make clean
+
+little_make: $(BIN) $(HEADER) $(MAKE)
+	@ gcc $(FLAGS) -I /usr/local/include -o $(NAME) $(BIN) -L /usr/local/lib/ -I $(LIBDIR) -I $(HEADER_DIR) $(LIB) -lmlx -framework OpenGL -framework AppKit
+	@ mv $(BIN) $(BIN_DIR)
 
 visi: $(BIN) $(LIB) $(HEADER) $(MAKE)
 	gcc $(FLAGS) -I /usr/local/include -o $(NAME) $(BIN) -L /usr/local/lib/ -I $(LIBDIR) -I $(HEADER_DIR) $(LIB) -lmlx -framework OpenGL -framework AppKit

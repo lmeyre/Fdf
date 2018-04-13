@@ -57,11 +57,13 @@ static void bres_trace(t_env *env)
     new_color = color_manage(env->start_z * height);
     final_color = color_manage(env->end_z * height);
     env->tmp = fake_trace(env, env->fault, env->dx, env->dy);
-    color_diff = ft_abs(new_color - final_color) / env->tmp;
+    color_diff = ft_abs(new_color - final_color) / (env->tmp +1); // enlever le +1 il sert juste pour un debug pour empecher le diviser par 0 mais on devait pas lavoir
     while (1)
     {
         new_color += color_diff;
-        mlx_pixel_put(env->mlx_ptr, env->win_ptr, curr_x, curr_y , final_color);
+        //mlx_pixel_put(env->mlx_ptr, env->win_ptr, curr_x, curr_y , final_color);
+        image_set_pixel(env, curr_x, curr_y, final_color);
+        
         if (curr_x == env->pt2_x && curr_y == env->pt2_y)
         {
            // ft_printf("Un trace de fait\n");

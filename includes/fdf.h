@@ -20,6 +20,8 @@ typedef struct      s_env
 	int				win_height;
 	void			*mlx_ptr;
 	void			*win_ptr;
+	void			*img_ptr;
+	char			*img;
 	int				pt1_x;
 	int				pt1_y;
 	int				pt2_x;
@@ -43,6 +45,9 @@ typedef struct      s_env
 	int				map_max;
 	int				start_z;
 	int				end_z;
+	int				bpp;
+	int				s_l;
+	int				endian;
 
 }                   t_env;
 
@@ -63,8 +68,12 @@ void    	ft_bresenham(t_env *env);
 int           fdf_key(int key, t_env *env);
 void	mlx_join_point(t_env *env);
 void mlx_map_point(t_env *env);
+void	mlx_join_point_above(t_env *env);
 void     help_value(int value, t_env *env);
-void    man_write(t_env *env);
+void    man_fdf(t_env *env);
 int color_manage(double t);
+void	image_set_pixel(t_env *env, int x, int y, int color);
+void        new_image(t_env *env);
+void        animate_isometric(t_env *env);
 
 #endif

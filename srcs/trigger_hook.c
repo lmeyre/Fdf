@@ -122,9 +122,10 @@ int            fdf_key(int key, t_env *env)
         reset_image(env);
     }
 
-    mlx_clear_window(env->mlx_ptr, env->win_ptr);
+    //mlx_clear_window(env->mlx_ptr, env->win_ptr);
     //mlx_map_point(env);
-	mlx_join_point(env);
-    man_write(env);
+	//mlx_join_point(env);
+    //man_fdf(env);
+    new_image(env);
     return (0);
 }
