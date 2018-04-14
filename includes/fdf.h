@@ -48,6 +48,7 @@ typedef struct      s_env
 	int				bpp;
 	int				s_l;
 	int				endian;
+	int tmpdebug;
 
 }                   t_env;
 

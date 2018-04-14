@@ -36,6 +36,40 @@ static void	mlx_window_size(t_env *env)
 	else
 		env->win_height = env->map_height * 10;
 
+	env->win_width = env->map_width * 10 + 500;
+	env->win_height = env->map_height * 10 + 500;
+//	if (env->win_width > 2500)
+//		env->win_width = 2500;
+//	if (env->win_height > 1350)
+//		env->win_height = 1350;
+   int valx;
+    int valy;
+    int end_x;
+    int end_y;
+
+    valx = ((env->map_width - 1) * env->spacing);
+    valy = ((env->map_height - 1) * env->spacing);
+    end_x = valx - valy;
+    end_y = (valx + valy) / 2;
+    while (end_x * 2 > env->win_width)
+	{
+		    valx = ((env->map_width - 1) * env->spacing);
+    valy = ((env->map_height - 1) * env->spacing);
+    end_x = valx - valy;
+    end_y = (valx + valy) / 2;
+		ft_printf(" on reduit la taille\n");
+		--env->spacing;
+	}
+    while (end_y * 2 > env->win_height)
+	{
+		    valx = ((env->map_width - 1) * env->spacing);
+    valy = ((env->map_height - 1) * env->spacing);
+    end_x = valx - valy;
+    end_y = (valx + valy) / 2;
+		ft_printf(" on reduit la taille\n");
+		--env->spacing;
+	}
+	ft_printf("win width = %d win height = %d end x = %d et end y = %d\n", env->win_width, env->win_height, end_x, end_y);
 	env->win_ptr = mlx_new_window(env->mlx_ptr, env->win_width/*500*/, env->win_height/*500*/, "fdf");// a proteger ?
 	env->img_ptr = mlx_new_image(env->mlx_ptr, env->win_width, env->win_height);
 }

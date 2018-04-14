@@ -41,7 +41,7 @@ all: $(NAME)
 
 $(NAME): $(BIN) $(LIB) $(HEADER) $(MAKE)
 	@ gcc $(FLAGS) -I /usr/local/include -o $(NAME) $(BIN) -L /usr/local/lib/ -I $(LIBDIR) -I $(HEADER_DIR) $(LIB) -lmlx -framework OpenGL -framework AppKit
-	@ mv $(BIN) $(BIN_DIR)
+	 mv $(BIN) $(BIN_DIR)
 
 %.o: %.c
 	@ gcc $(FLAGS) -o $@ -c $< -I $(HEADER_DIR)

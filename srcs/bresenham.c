@@ -48,18 +48,17 @@ static void manage_color(t_env *env, int height, int *count, int *color)// ptet 
     int     final_color;
     int     difference;
     int     amount;
-// SANS DOUTE UN -1 ou +1 A CALER QQ PART
+    
     new_color = color_manage(env->start_z * height * 7);
     final_color = color_manage(env->end_z * height * 7);
     if (new_color == final_color)
         return ;
-    amount = fake_trace(env, env->fault, env->dx, env->dy);
-    difference = ft_abs(ft_abs(env->start_z) - ft_abs(env->end_z));
-
-    if (*count == amount / difference)
+    amount = fake_trace(env, env->fault, env->dx, env->dy);// donner cette valeur au dessus pour moins faire lag en la recalculant
+    difference = ft_abs(env->start_z - env->end_z);//idem
+    if (*count == amount / difference && amount - env->tmpdebug >= 10)
     {
-        ft_printf("on change de couleur pendant brese\n amount = %d, diff = %d, count = %d\n", amount, difference, *count);
-        if (new_color < final_color)
+      //  ft_printf("on change de couleur pendant brese\n amount = %d, diff = %d, count = %d\n", amount, difference, *count);
+        if (new_color > final_color)
         {
             *color += height;
         }
@@ -67,8 +66,8 @@ static void manage_color(t_env *env, int height, int *count, int *color)// ptet 
         {
             *color -= height;
         }
-        env->color = color_manage(*color);
-        ft_printf("la couleur augmente de %d et vaut %d\n", height *7, env->color);
+        env->color = color_manage(*color / 10);
+      //  ft_printf("la couleurchange de %d et vaut %d on a fait %d etape\n", height , *color, env->tmpdebug);
         *count = 0;
     }
 }
@@ -79,13 +78,14 @@ static void bres_trace(t_env *env)
     int     curr_y;
     int     height;
     int     count;
-    int     color;
+    int     color_start;
 
 
   //  int     color_diff;
 
     curr_x = env->pt1_x;
     curr_y = env->pt1_y;
+    // bug si spacing est egal a 0 voir comment on a fait dans mlx mais sans creer de soucis
     height = env->spacing * env->multiply;
     /*env->tmp = fake_trace(env, env->fault, env->dx, env->dy);
     if (new_color == final_color)
@@ -93,12 +93,15 @@ static void bres_trace(t_env *env)
     else
         color_diff = (new_color - final_color) / env->tmp;*/
         count = 0;
-    color = (env->start_z * height * 7);
-    env->color = color_manage(color);
+    color_start = (env->start_z * height);
+    env->color = color_manage(color_start / 10);
+    env->tmpdebug = 0;
     while (1)
     {
             
-        manage_color(env, height, &count, &color);
+        manage_color(env, height, &count, &color_start);
+        //if (tmp  != env->color )
+            //return ;
         //new_color += color_diff;
         //mlx_pixel_put(env->mlx_ptr, env->win_ptr, curr_x, curr_y , env->color);
         image_set_pixel(env, curr_x, curr_y, env->color);
@@ -115,11 +118,13 @@ static void bres_trace(t_env *env)
             {
                 env->fault += env->dx;
                 (env->scale_y == 1) ? ++curr_y : --curr_y;
+                (env->scale_y == 1) ? ++count : ++count;//verifier mais a priori oui on up dans les deux sens car on sait si on ajoute ou soustrait color aapres dans manage
             }
         }
         else
         {
             (env->scale_y == 1) ? ++curr_y : --curr_y;
+            (env->scale_y == 1) ? ++count : ++count;
             env->fault -= env->dx;
             if (env->fault < 0) // et egal ? si on a bug tester avec
             {
@@ -127,7 +132,7 @@ static void bres_trace(t_env *env)
                 (env->scale_x == 1) ? ++curr_x : --curr_x;
             }
         }
-        ++count;
+        ++env->tmpdebug;
     }
 }
 
@@ -138,7 +143,7 @@ static void diff_bres_value(t_env *env)
     env->path = (env->dx < env->dy ? env->dy : env->dx);
     env->scale_x = (env->pt1_x < env->pt2_x ? 1 : -1);
     env->scale_y = (env->pt1_y < env->pt2_y ? 1 : -1);
-    env->fault = env->path/ 2;
+    env->fault = env->path / 2;
     env->path = (env->dx < env->dy ? -1 : 1); // path = 1 si x est le plus grand sinon - 1 pour y
    // ft_printf("env paht = %d, scale x = %d, scale y = %d, dx = %d, dy = %d\n", env->path, env->scale_x, env->scale_y, env->dx, env->dy);
 }
@@ -154,9 +159,8 @@ static void perfect_center(t_env *env) // si on veut un centre vraiment parfait 
     valy = ((env->map_height - 1) * env->spacing);
     end_x = valx - valy;
     end_y = (valx + valy) / 2;
-    env->add_x = env->win_width / 2 - end_x; // rajouter scale X si soucis, en fait je crois que scale X a rien a voir du tout avec tout ca
-    env->add_y = env->win_height / 2 - end_y;
-   
+    env->add_x = env->win_width / 2 - end_x / 2;
+    env->add_y = env->win_height / 2 - end_y / 2;
 }
 
 void    ft_bresenham(t_env *env)
