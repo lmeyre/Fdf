@@ -11,13 +11,13 @@ void        new_image(t_env *env)
 {
     mlx_clear_window(env->mlx_ptr, env->win_ptr);
     if (env->img)
-        mlx_destroy_image(env->mlx_ptr, env->img_ptr);
-    //    ft_bzero(env->img, env->win_width * env->win_height * 4);//sale voir si on peut pas faire autrement avec destroy ou clear img
+//        mlx_destroy_image(env->mlx_ptr, env->img_ptr);
+        ft_bzero(env->img, env->win_width * env->win_height * 4);//sale voir si on peut pas faire autrement avec destroy ou clear img
     // vraiment verifier tout ca est bizarre
-    env->img_ptr = mlx_new_image(env->mlx_ptr, env->win_width, env->win_height);
+  //  env->img_ptr = mlx_new_image(env->mlx_ptr, env->win_width, env->win_height);
     //env->img =  mlx_get_data_addr(env->img_ptr, &(env->bpp), &(env->s_l), &(env->endian));
 
-    mlx_join_point(env);
+   // mlx_join_point_above(env);
     mlx_put_image_to_window(env, env->win_ptr, env->img_ptr, 0, 0);
     man_fdf(env);
 }
