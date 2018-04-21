@@ -1,10 +1,6 @@
 #include "fdf.h"
 
-/*
-void        broken_bresenham(t_env *env, char *above, char *isometric)
-{
 
-}*/
 /*
 static void	join_iso_above(t_env *env)
 {
@@ -82,48 +78,63 @@ static void	mlx_join_point_percent(t_env *env, int percent) // on va faire , on 
 	height = env->multiply * env->spacing;
 	i = 0;
 	j = 0;
+
+	int val_x2;
+	int val_y2;
 	while (i < env->map_height) // i = y
 	{
 		while (j < LST->lenght) // j=  x
 		{
 			val_x = j * env->spacing;
 			val_y = i * env->spacing;
-			
+			int tmpp;
+			val_x2 = (j + 1) * env->spacing;
+			val_y2 = (i + 1) * env->spacing;
+
 			if ((j + 1) < LST->lenght)
 			{
-				//
-				env->pt1_x = val_x - val_y + env->decale_x;
-				env->pt1_y = (val_y + val_x) / 2 + env->decale_y  - (env->array[i][j] * height);
-		//		env->pt2_x = val_x + env->decale_x;
-		//		env->pt2_y = val_y + env->decale_y;
-				//
-				env->pt1_x = val_x * 100 - (val_y * percent) + env->decale_x * 100;
-				env->pt1_x /= 100;
-				env->pt1_y = (val_y * 100 + (val_x * percent)) / (2) + (env->decale_y * 100)  - (env->array[i][j] * height); // !!!
-				env->pt1_y /= 100;
-				env->pt2_x = ((j + 1) * env->spacing) * 100  - (val_y * percent) + env->decale_x * 100;
-				env->pt2_x /= 100;
-				env->pt2_y = (val_y * 100 + (((j + 1) * env->spacing) * percent)) / (2) + env->decale_y * 100 - ((env->array[i][j + 1] * height));
-				env->pt2_y /= 100;
+				tmpp = val_x - val_y + env->decale_x;
+				env->pt1_x = val_x + (tmpp* percent / 100) + env->decale_x;
+
+				tmpp = (val_y + val_x)  / 2 + env->decale_y - (env->array[i][j] * height);;
+				env->pt1_y = val_y + (tmpp* percent / 100) + env->decale_y - (env->array[i][j] * height); // !!!
+
+				tmpp = val_x2 - val_y + env->decale_x;
+				env->pt2_x = val_x2 + ( tmpp* percent / 100) + env->decale_x;
+
+				tmpp = (val_y + val_x2) / 2 + env->decale_y - (env->array[i][j + 1] * height);
+				env->pt2_y = val_y + (tmpp * percent / 100) + env->decale_y - (env->array[i][j + 1] * height); // !!!
 
 
 				env->start_z = (env->array[i][j]);
 				env->end_z = (env->array[i][j + 1]);
+				if (j == 0 && i == 0)
+					ft_printf(" x1 = %d y1 %d x2 %d y2 %d\n", env->pt1_x, env->pt1_y, env->pt2_x, env->pt2_y);
 				ft_bresenham(env);
+				//image_set_pixel(env, env->pt1_x, env->pt1_y, 0xFFFFFF);
+				//image_set_pixel(env, env->pt2_x, env->pt2_y, 0xFFFFFF);
 			}
 			if ((i + 1) < env->map_height && (env->lst->next && (j < ((t_valist*)(env->lst->next->content))->lenght))) // bien verifier celle la particluierement
 			{
-				env->pt1_x = val_x * 100 - (val_y * percent) + env->decale_x * 100;
-				env->pt1_x /= 100;
-				env->pt1_y = (val_y * 100 + (val_x * percent)) / (2) + env->decale_y * 100 - (env->array[i][j] * height);
-				env->pt1_y /= 100;
-				env->pt2_x = val_x * 100 - (((i + 1) * env->spacing) * percent) + env->decale_x * 100;
-				env->pt2_x /= 100;
-				env->pt2_y = ((i + 1) * env->spacing * 100 + (val_x * percent)) / (2) + env->decale_y * 100 - (env->array[i + 1][j] * height);
-				env->pt2_y /= 100;
+				tmpp = val_x - val_y + env->decale_x;
+				env->pt1_x = val_x + (tmpp* percent / 100) + env->decale_x;
+
+				tmpp = (val_y + val_x)  / 2  + env->decale_y - (env->array[i][j] * height);
+				env->pt1_y = val_y + (tmpp* percent / 100) + env->decale_y - (env->array[i][j] * height); // !!!
+
+				tmpp = val_x - val_y2 + env->decale_x;
+				env->pt2_x = val_x + ( tmpp* percent / 100) + env->decale_x;
+
+				tmpp = (val_y2 + val_x) / 2 + env->decale_y - (env->array[i + 1][j] * height);
+				env->pt2_y = val_y2 + (tmpp * percent / 100) + env->decale_y - (env->array[i + 1][j] * height); // !!!
+			
+			
 				env->start_z = (env->array[i][j]);
 				env->end_z = (env->array[i + 1][j]);
+				
 				ft_bresenham(env);
+				//image_set_pixel(env, env->pt1_x, env->pt1_y, 0xFFFFFF);
+				//image_set_pixel(env, env->pt2_x, env->pt2_y, 0xFFFFFF);
 			}
 			++j;
 		}
@@ -136,48 +147,35 @@ static void	mlx_join_point_percent(t_env *env, int percent) // on va faire , on 
 		env->lst = env->lst->prev;
 }
 
-void		join_100(t_env *env)
+void		join_100(t_env *env, int key)
 {
-	int i;
+	static int i = 100;
 
-	i = 1;
-	while (i != 100)
-	{
-		    mlx_clear_window(env->mlx_ptr, env->win_ptr);
-    if (env->img)
-        ft_bzero(env->img, env->win_width * env->win_height * 4);//sale voir si on peut pas faire autrement avec destroy ou clear img
+//	while (i <= 100)
+//	{
+	if (key == W)
+		 i += 2;
+	else if (key == Q)
+		i -= 2;
+	if (i == 0)
+		++i;
+		mlx_clear_window(env->mlx_ptr, env->win_ptr);
+    	if (env->img)
+        	ft_bzero(env->img, env->win_width * env->win_height * 4);
 		mlx_join_point_percent(env, i);
 		mlx_put_image_to_window(env, env->win_ptr, env->img_ptr, 0, 0);
-
-			//sleep(1);
-			//mlx_loop(env->mlx_ptr);
-		
-		++i;
-	}
-	return ;
-	    mlx_clear_window(env->mlx_ptr, env->win_ptr);
+		//sleep(1);
+	//	i += 1;
+//	}
+/*	mlx_clear_window(env->mlx_ptr, env->win_ptr);
     if (env->img)
-        ft_bzero(env->img, env->win_width * env->win_height * 4);//sale voir si on peut pas faire autrement avec destroy ou clear img
-		mlx_join_point_percent(env, i);
-	mlx_put_image_to_window(env, env->win_ptr, env->img_ptr, 0, 0);
+        ft_bzero(env->img, env->win_width * env->win_height * 4);
+	mlx_join_point_percent(env, i);
+	mlx_put_image_to_window(env, env->win_ptr, env->img_ptr, 0, 0);*/
 }
 
-void        animate_isometric(t_env *env)
+int        animate_isometric(int key, t_env *env)
 {
-   // char *isometric;
-   // char *above;
-// eventuellement tout clear avant
-
-   // mlx_join_point(env); // bien faire gaffe de la valeur du char * si elle est clear avant que join point mette des trucs dedans
-    //isometric = env->img;
-    //mlx_join_point(env);
-    //above = env->img;
-   // mlx_clear_window(env->mlx_ptr, env->win_ptr);
-   // if (env->img)
-   //     mlx_destroy_image(env->mlx_ptr, env->img_ptr);
-    //env->img_ptr = mlx_new_image(env->mlx_ptr, env->win_width, env->win_height);
-	//new_image(env);
-	join_100(env);
-   // join_iso_above(env); // pendant ce join on veut rappeler des mini bresenham donc
-    //mlx_put_image_to_window(env, env->win_ptr, env->img_ptr, 0, 0);
+	join_100(env, key);
+	return (0);
 }

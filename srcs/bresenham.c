@@ -169,7 +169,7 @@ void    ft_bresenham(t_env *env)
     if (env->center != env->spacing)
     {
         perfect_center(env);
-        env->center = env->spacing;
+        env->center = env->spacing; // peut etre ps compatible avec animation
     }
         env->pt1_x += env->add_x;
         env->pt2_x += env->add_x;
