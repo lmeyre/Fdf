@@ -21,7 +21,7 @@ void     help_value(int value, t_env *env)
     }
 }
 
-void    man_fdf(t_env *env)
+void    man_fdf(t_env *env)// rajouter toutes les options qu on a implemente
 {
     mlx_string_put(env->mlx_ptr, env->win_ptr, 10, 10 , 0xFFFFFF, "PAD to move -> 1/2/3/4/6/7/8/9");
     mlx_string_put(env->mlx_ptr, env->win_ptr, 10, 30 , 0xFFFFFF, "Arrow keys to change height -> Up & Down");

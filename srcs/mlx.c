@@ -195,8 +195,6 @@ void	mlx_join_point(t_env *env) // on va faire , on parcourst tout les point et 
 				env->pt2_y = (val_y + (j + 1) * env->spacing) / 2 + env->decale_y - (env->array[i][j + 1] * height);
 				env->start_z = (env->array[i][j]);
 				env->end_z = (env->array[i][j + 1]);
-				if (j == 0 && i == 0)
-					ft_printf(" x1 = %d y1 %d x2 %d y2 %d\n", env->pt1_x, env->pt1_y, env->pt2_x, env->pt2_y);
 				ft_bresenham(env);
 			}
 			if ((i + 1) < env->map_height && (env->lst->next && (j < ((t_valist*)(env->lst->next->content))->lenght))) // bien verifier celle la particluierement
@@ -232,9 +230,9 @@ int			mlx_fdf(t_env *env)
 //	mlx_join_point_above(env);
 	new_image(env);
 	//animate_isometric(env);
-//	mlx_pixel_put(env->mlx_ptr, env->win_ptr, 10, env->win_height / 2, 0xFFFFFF); // enlever ca
-//	mlx_key_hook(env->win_ptr, fdf_key, env);
-	mlx_key_hook(env->win_ptr, animate_isometric, env);
+	mlx_pixel_put(env->mlx_ptr, env->win_ptr, 10, env->win_height / 2, 0xFFFFFF); // enlever ca
+	mlx_key_hook(env->win_ptr, fdf_key, env);
+	//mlx_loop_hook(env->mlx_ptr, animate_isometric, env);
 	
 
 	mlx_loop(env->mlx_ptr);

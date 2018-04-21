@@ -117,6 +117,16 @@ int            fdf_key(int key, t_env *env)
       //  ft_putendl("4");
         exit(0);
     }
+    else if (key == W)
+    {
+        env->anim_val = 100;
+        mlx_loop_hook(env->mlx_ptr, animate_isometric, env);
+    }
+    else if (key == Q)
+    {
+        env->anim_val = 100;
+        mlx_loop_hook(env->mlx_ptr, animate_isometric_effect, env);
+    }
     else if (key == SPACEBAR)
     {
         reset_image(env);
