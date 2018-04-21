@@ -49,6 +49,8 @@ typedef struct      s_env
 	int				s_l;
 	int				endian;
 	int tmpdebug;
+	int				anim_val;
+	int				color_max;
 
 }                   t_env;
 
@@ -75,6 +77,7 @@ void    man_fdf(t_env *env);
 int color_manage(double t);
 void	image_set_pixel(t_env *env, int x, int y, int color);
 void        new_image(t_env *env);
-int        animate_isometric(int key, t_env *env);
+int        animate_isometric(t_env *env);
+int        animate_isometric_effect(t_env *env);
 
 #endif
