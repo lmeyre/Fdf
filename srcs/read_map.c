@@ -76,7 +76,6 @@ static void			get_map_value(int fd, t_env *env)
 		tab = ft_strsplit(str, ' ');
 		while (tab[i])
 		{
-			
 			env->tmp = ft_atoi(tab[i]);
 			if (x == 42)
 			{
@@ -107,6 +106,8 @@ int			read_map(t_env *env, char **argv)
 	if (!(get_map_dimension(argv, env)))
 		return (0);
 	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+		exit(EXIT_FAILURE);
 	get_map_value(fd, env);
 	return (1);
 }

@@ -60,33 +60,7 @@ void            key_height(int key, t_env *env)
         help_value(-1, env);
 }
 
-void            reset_image(t_env *env)
-{
-    int i;
-    int j;
 
-    i = 0;
-    j = 0;
-	while (i < env->map_height)
-	{
-		while (j < LST->lenght)
-		{
-            env->array[i][j] = env->origin_array[i][j];
-			++j;
-		}
-		if (env->lst->next)
-			env->lst = env->lst->next;
-		++i;
-		j = 0;
-	}
-    env->center = 42;
-    env->decale_x = 0;
-    env->decale_y = 0;
-    env->spacing = 10;
-    env->multiply = 1;
-	while (env->lst->prev)
-		env->lst = env->lst->prev;
-}
 
 
 int            fdf_key(int key, t_env *env)
@@ -117,12 +91,12 @@ int            fdf_key(int key, t_env *env)
       //  ft_putendl("4");
         exit(0);
     }
-    else if (key == W)
+    else if (key == Q)
     {
         env->anim_val = 100;
         mlx_loop_hook(env->mlx_ptr, animate_isometric, env);
     }
-    else if (key == Q)
+    else if (key == T)
     {
         env->anim_val = 100;
         mlx_loop_hook(env->mlx_ptr, animate_isometric_effect, env);

@@ -42,7 +42,7 @@ static int fake_trace(t_env *env, int fault, int dx, int dy)
     }
 }
 
-static void manage_color(int base_color, int final_color, int *color, int amount, t_env *env)// ptet si on gere mieux les variable au dessus on evitera de refaire les appele de variable en boucle ici et faire lag
+static void manage_color(int base_color, int final_color, int *color, int amount)// ptet si on gere mieux les variable au dessus on evitera de refaire les appele de variable en boucle ici et faire lag
 {
     int     difference;
 
@@ -51,16 +51,10 @@ static void manage_color(int base_color, int final_color, int *color, int amount
     difference = ft_abs(base_color - final_color);//idem
     if (base_color > final_color)
     {
-      //  ft_printf("down color\n");
-      if (env->tmpdebug == 1)
-        ft_printf("SOUCIS\n");
         *color -= difference / amount;
     }
     else if (base_color < final_color)
     {
-      //  ft_printf("up color\n");
-      if (env->tmpdebug == -1)
-        ft_printf("SOUCIS\n");
         *color += difference / amount;
     }
 }
@@ -87,11 +81,10 @@ static void bres_trace(t_env *env)
     int base_color = color_start;
     int final_color = color_range(env->end_z);
     env->tmpdebug = (base_color > final_color ? -1 : 1);
-    ft_printf("ONE, debug = %d\n", env->tmpdebug);
     while (1)
     {
         if (env->color_option == 1)
-            manage_color(base_color, final_color, &color_start, amount, env); 
+            manage_color(base_color, final_color, &color_start, amount); 
         image_set_pixel(env, curr_x, curr_y, color_start);
         if (curr_x == env->pt2_x && curr_y == env->pt2_y)
         {

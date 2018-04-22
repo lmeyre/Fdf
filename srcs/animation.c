@@ -1,151 +1,9 @@
 #include "fdf.h"
 
 
-/*
-static void	join_iso_above(t_env *env)
-{
-	int i;
-	int j;
-	int val_x;
-	int val_y;
-	int height;
 
 
-	env->tmp = ft_abs(env->map_max) - ft_abs(env->map_min);// remoove
-	if (env->spacing <= 0)
-		env->spacing = 1;
-	height = env->multiply * env->spacing;
-	i = 0;
-	j = 0;
-	while (i < env->map_height) // i = y
-	{
-		while (j < LST->lenght) // j=  x
-		{
-			val_x = j * env->spacing;
-			val_y = i * env->spacing;
-			
-			if ((j + 1) < LST->lenght) // Dans celui ci uniquament test denlever le +1 MEME QUAND TOUT MARCHERA
-			{
-				env->pt1_x = val_x - val_y + env->decale_x;
-				env->pt1_y = (val_y + val_x) / 2 + env->decale_y  - (env->array[i][j] * height);
-				env->pt2_x = val_x + env->decale_x;
-				env->pt2_y = val_y + env->decale_y;
-				env->start_z = (env->array[i][j]);
-				env->end_z = (env->array[i][j]);
-                //ft_printf("pt1x = %d, 1y = %d 2x = %d 2y = %d\n", env->pt1_x, env->pt1_y, env->pt2_x, env->pt2_y);
-				ft_bresenham(env);
-			}
-			if ((i + 1) < env->map_height && (env->lst->next && (j < ((t_valist*)(env->lst->next->content))->lenght))) // bien verifier celle la particluierement
-			{
-				env->pt1_x = val_x - val_y + env->decale_x;
-				env->pt1_y = (val_y + val_x) / 2 + env->decale_y - (env->array[i][j] * height);
-				env->pt2_x = val_x  + env->decale_x;
-				env->pt2_y = val_y + env->decale_y;
-				env->start_z = (env->array[i][j]);
-				env->end_z = (env->array[i][j]);
-				ft_bresenham(env);
-			}
-			++j;
-            mlx_put_image_to_window(env, env->win_ptr, env->img_ptr, 0, 0);
-            //sleep(1);
-          //  mlx_clear_window(env->mlx_ptr, env->win_ptr);
-         //   if (env->img)
-           //     mlx_destroy_image(env->mlx_ptr, env->img_ptr);
-            //env->img_ptr = mlx_new_image(env->mlx_ptr, env->win_width, env->win_height);
-            //man_fdf(env);
-		}
-		if (env->lst->next)
-			env->lst = env->lst->next;
-		++i;
-		j = 0;
-	}
-	while (env->lst->prev)
-		env->lst = env->lst->prev;
-}*/
-
-static void	mlx_join_point_percent_effect(t_env *env, int percent) // on va faire , on parcourst tout les point et pour chqaue point on fait un lien avec celui qui est en bas + a droite
-{
-	int i;
-	int j;
-	int val_x;
-	int val_y;
-	int height;
-
-
-	env->tmp = ft_abs(env->map_max) - ft_abs(env->map_min);// remoove
-	if (env->spacing <= 0)
-		env->spacing = 1;
-	height = env->multiply * env->spacing;
-	i = 0;
-	j = 0;
-
-	int val_x2;
-	int val_y2;
-	while (i < env->map_height) // i = y
-	{
-		while (j < LST->lenght) // j=  x
-		{
-			val_x = j * env->spacing;
-			val_y = i * env->spacing;
-			int tmpp;
-			val_x2 = (j + 1) * env->spacing;
-			val_y2 = (i + 1) * env->spacing;
-
-			if ((j + 1) < LST->lenght)
-			{
-				tmpp = val_x - val_y + env->decale_x;
-				env->pt1_x = val_x + (tmpp* percent / 100) + env->decale_x;
-
-				tmpp = (val_y + val_x)  / 2 + env->decale_y - (env->array[i][j] * height);;
-				env->pt1_y = val_y + (tmpp* percent / 100) + env->decale_y - (env->array[i][j] * height) * percent / 100; // !!!
-
-				tmpp = val_x2 - val_y + env->decale_x;
-				env->pt2_x = val_x2 + ( tmpp* percent / 100) + env->decale_x;
-
-				tmpp = (val_y + val_x2) / 2 + env->decale_y - (env->array[i][j + 1] * height);
-				env->pt2_y = val_y + (tmpp * percent / 100) + env->decale_y - (env->array[i][j + 1] * height) * percent / 100; // !!!
-
-
-				env->start_z = (env->array[i][j]);
-				env->end_z = (env->array[i][j + 1]);
-				ft_bresenham(env);
-				//image_set_pixel(env, env->pt1_x, env->pt1_y, 0xFFFFFF);
-				//image_set_pixel(env, env->pt2_x, env->pt2_y, 0xFFFFFF);
-			}
-			if ((i + 1) < env->map_height && (env->lst->next && (j < ((t_valist*)(env->lst->next->content))->lenght))) // bien verifier celle la particluierement
-			{
-				tmpp = val_x - val_y + env->decale_x;
-				env->pt1_x = val_x + (tmpp* percent / 100) + env->decale_x;
-
-				tmpp = (val_y + val_x)  / 2  + env->decale_y - (env->array[i][j] * height);
-				env->pt1_y = val_y + (tmpp* percent / 100) + env->decale_y - (env->array[i][j] * height) * percent / 100; // !!!
-
-				tmpp = val_x - val_y2 + env->decale_x;
-				env->pt2_x = val_x + ( tmpp* percent / 100) + env->decale_x;
-
-				tmpp = (val_y2 + val_x) / 2 + env->decale_y - (env->array[i + 1][j] * height);
-				env->pt2_y = val_y2 + (tmpp * percent / 100) + env->decale_y - (env->array[i + 1][j] * height) * percent / 100; // !!!
-			
-			
-				env->start_z = (env->array[i][j]);
-				env->end_z = (env->array[i + 1][j]);
-				
-				ft_bresenham(env);
-				//image_set_pixel(env, env->pt1_x, env->pt1_y, 0xFFFFFF);
-				//image_set_pixel(env, env->pt2_x, env->pt2_y, 0xFFFFFF);
-			}
-			++j;
-		}
-		if (env->lst->next)
-			env->lst = env->lst->next;
-		++i;
-		j = 0;
-	}
-	while (env->lst->prev)
-		env->lst = env->lst->prev;
-}
-
-static void	mlx_join_point_percent(t_env *env, int percent) // on va faire , on parcourst tout les point et pour chqaue point on fait un lien avec celui qui est en bas + a droite
+void	mlx_join_point_percent(t_env *env, int percent) // on va faire , on parcourst tout les point et pour chqaue point on fait un lien avec celui qui est en bas + a droite
 {
 	int i;
 	int j;
@@ -234,6 +92,7 @@ void		join_100(t_env *env, int key)
 	if (env->anim_val > 100)
 	{
 		tmp = 1;
+		new_image(env);
 		return ;
 	}
 	if (env->anim_val <= 0)
@@ -297,18 +156,8 @@ void		join_100(t_env *env, int key)
 
 int        animate_isometric(t_env *env)
 {
-
-	//if (key != Q && key != W)
-		//return (0);
 	join_100(env, W);
 	return (0);
 }
 
-int        animate_isometric_effect(t_env *env)
-{
 
-	//if (key != Q && key != W)
-		//return (0);
-	join_100(env, Q);
-	return (0);
-}

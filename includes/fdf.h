@@ -48,7 +48,6 @@ typedef struct      s_env
 	int				bpp;
 	int				s_l;
 	int				endian;
-	int tmpdebug;
 	int				anim_val;
 	int				color_option;
 
@@ -60,25 +59,38 @@ typedef struct		s_valist
 	int				lenght;
 }					t_valist;
 
+/*
+** Utilitaires
+*/
+
 t_env       *initialize_env(void);
-
-int		test(void);
-
-int			read_map(t_env *env, char **argv);
-int			fdf(t_env *env);
-int			mlx_fdf(t_env *env);
-void    	ft_bresenham(t_env *env);
-int           fdf_key(int key, t_env *env);
-void	mlx_join_point(t_env *env);
-void mlx_map_point(t_env *env);
-void	mlx_join_point_above(t_env *env);
 void     help_value(int value, t_env *env);
 void    man_fdf(t_env *env);
-int color_manage(double t);
-void	image_set_pixel(t_env *env, int x, int y, int color);
+int 	color_range(int height);
+void            reset_image(t_env *env);
+
+/*
+** Images
+*/
+
 void        new_image(t_env *env);
+void	image_set_pixel(t_env *env, int x, int y, int color);
+
+/*
+** fdf
+*/
+
+int			fdf(t_env *env);
+int			read_map(t_env *env, char **argv);
+void		mlx_window_size(t_env *env);
+void    	ft_bresenham(t_env *env);
+int			fdf_key(int key, t_env *env);
+void		mlx_join_point(t_env *env);
 int        animate_isometric(t_env *env);
 int        animate_isometric_effect(t_env *env);
-int 	color_range(int height);
+void		join_100(t_env *env, int key);
+void	mlx_join_point_percent(t_env *env, int percent);
+void	mlx_join_point_percent_effect(t_env *env, int percent);
+
 
 #endif

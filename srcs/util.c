@@ -21,22 +21,17 @@ void     help_value(int value, t_env *env)
     }
 }
 
-void    man_fdf(t_env *env)// rajouter toutes les options qu on a implemente
+void    man_fdf(t_env *env)
 {
     mlx_string_put(env->mlx_ptr, env->win_ptr, 10, 10 , 0xFFFFFF, "PAD to move -> 1/2/3/4/6/7/8/9");
     mlx_string_put(env->mlx_ptr, env->win_ptr, 10, 30 , 0xFFFFFF, "Arrow keys to change height -> Up & Down");
     mlx_string_put(env->mlx_ptr, env->win_ptr, 10, 50 , 0xFFFFFF, "Zoom -> + & -");
-    mlx_string_put(env->mlx_ptr, env->win_ptr, 10, 70 , 0xFFFFFF, "Multiply height -> O & L");
+    mlx_string_put(env->mlx_ptr, env->win_ptr, 10, 70 , 0xFFFFFF, "Exponential height -> O & L");
+    mlx_string_put(env->mlx_ptr, env->win_ptr, 10, 110 , 0xFFFFFF, "Animation/Effect -> Q/T");
+    mlx_string_put(env->mlx_ptr, env->win_ptr, 10, 130 , 0xFFFFFF, "Graduate Colors -> C");
     mlx_string_put(env->mlx_ptr, env->win_ptr, 10, 90 , 0xFFFFFF, "Reset -> Space");
 }
 
-int color_manage(double t) // si on a un soucis ca peut venir du cast
-{
-    return ((RGB(
-        127.5 * (cos(t) + 1),
-        127.5 * (sin(t) + 1),
-        127.5 * (1 - cos(t)))));
-}
 
 int color_range(int height)
 {

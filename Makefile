@@ -6,7 +6,7 @@
 #    By: lmeyre <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/28 23:00:43 by lmeyre            #+#    #+#              #
-#    Updated: 2018/04/22 23:44:54 by lmeyre           ###   ########.fr        #
+#    Updated: 2018/04/23 00:16:08 by lmeyre           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = fdf
 
 FLAGS = -Wall -Werror -Wextra
 
-SRCS = $(addprefix srcs/, bresenham.c fdf.c initialize_env.c main.c mlx.c read_map.c trigger_hook.c util.c animation.c fdf_image.c)\
+SRCS = $(addprefix srcs/, bresenham.c fdf.c initialize_env.c main.c mlx.c read_map.c trigger_hook.c util.c animation.c animation_effect.c fdf_image.c)\
 
 SRCS_DIR = srcs
 
