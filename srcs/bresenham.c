@@ -42,35 +42,27 @@ static int fake_trace(t_env *env, int fault, int dx, int dy)
     }
 }
 
-static void manage_color(t_env *env, int height, int *count, int *color)// ptet si on gere mieux les variable au dessus on evitera de refaire les appele de variable en boucle ici et faire lag
+static void manage_color(int base_color, int final_color, int *color, int amount, t_env *env)// ptet si on gere mieux les variable au dessus on evitera de refaire les appele de variable en boucle ici et faire lag
 {
-    int     base_color;
-    int     final_color;
     int     difference;
-    int     amount;
 
-    
-    (void) height;
-    return ;
-    base_color = (env->color_max * env->start_z / 15) + (env->color_max * env->start_z % 15) + 0xFFFFFF;
-    final_color = (env->color_max * env->end_z / 15) + (env->color_max * env->end_z % 15) + 0xFFFFFF;
     if (base_color == final_color)
         return ;
-    amount = fake_trace(env, env->fault, env->dx, env->dy);// donner cette valeur au dessus pour moins faire lag en la recalculant
     difference = ft_abs(base_color - final_color);//idem
-   // if (*count == amount / difference && amount - env->tmpdebug >= 10)
-   // {  
-      //  ft_printf("on change de couleur pendant brese\n amount = %d, diff = %d, count = %d\n", amount, difference, *count);
-        if (env->color < 0 && base_color > final_color)
-            *color -= difference / amount;
-        else if (env->color > 0 && base_color > final_color)
-            *color += difference / amount;
-
-        //*color += difference / amount;
-        env->color = 0;/*color_manage(*color / 10)*/;
-      (void) count;
-       // *count = 0;
-   // }
+    if (base_color > final_color)
+    {
+      //  ft_printf("down color\n");
+      if (env->tmpdebug == 1)
+        ft_printf("SOUCIS\n");
+        *color -= difference / amount;
+    }
+    else if (base_color < final_color)
+    {
+      //  ft_printf("up color\n");
+      if (env->tmpdebug == -1)
+        ft_printf("SOUCIS\n");
+        *color += difference / amount;
+    }
 }
 
 static void bres_trace(t_env *env)
@@ -80,35 +72,27 @@ static void bres_trace(t_env *env)
     int     height;
     int     count;
     int     color_start;
+    int     amount;
 
 
-  //  int     color_diff;
 
     curr_x = env->pt1_x;
     curr_y = env->pt1_y;
     // bug si spacing est egal a 0 voir comment on a fait dans mlx mais sans creer de soucis
     height = 10;
-    /*env->tmp = fake_trace(env, env->fault, env->dx, env->dy);
-    if (new_color == final_color)
-        color_diff = 0;
-    else
-        color_diff = (new_color - final_color) / env->tmp;*/
         count = 0;
     env->color = 0;
-    //if (env->start_z != 0)
-        color_start = (env->color_max * env->start_z / 15) + (env->color_max * env->start_z % 15) + 0xFFFFFF;
-    //else
-        //color_start = 0xFFFFFF;
-    //env->color = 0xC6ECF;
-    env->tmpdebug = 0;
+    color_start = color_range(env->start_z);
+    amount = fake_trace(env, env->fault, env->dx, env->dy);
+    int base_color = color_start;
+    int final_color = color_range(env->end_z);
+    env->tmpdebug = (base_color > final_color ? -1 : 1);
+    ft_printf("ONE, debug = %d\n", env->tmpdebug);
     while (1)
     {
-        manage_color(env, height, &count, &color_start);
-        //if (tmp  != env->color )
-            //return ;
-        //new_color += color_diff;
-        //mlx_pixel_put(env->mlx_ptr, env->win_ptr, curr_x, curr_y , env->color);
-        image_set_pixel(env, curr_x, curr_y, env->color_max);
+        if (env->color_option == 1)
+            manage_color(base_color, final_color, &color_start, amount, env); 
+        image_set_pixel(env, curr_x, curr_y, color_start);
         if (curr_x == env->pt2_x && curr_y == env->pt2_y)
         {
            // ft_printf("Un trace de fait\n");
@@ -122,13 +106,13 @@ static void bres_trace(t_env *env)
             {
                 env->fault += env->dx;
                 (env->scale_y == 1) ? ++curr_y : --curr_y;
-                (env->scale_y == 1) ? ++(env->color) : --(env->color);//verifier mais a priori oui on up dans les deux sens car on sait si on ajoute ou soustrait color aapres dans manage
+             //   (env->scale_y == 1) ? ++(env->color) : --(env->color);//verifier mais a priori oui on up dans les deux sens car on sait si on ajoute ou soustrait color aapres dans manage
             }
         }
         else
         {
             (env->scale_y == 1) ? ++curr_y : --curr_y;
-            (env->scale_y == 1) ? ++(env->color) : --(env->color);
+           // (env->scale_y == 1) ? ++(env->color) : --(env->color);
             env->fault -= env->dx;
             if (env->fault < 0) // et egal ? si on a bug tester avec
             {
@@ -136,7 +120,7 @@ static void bres_trace(t_env *env)
                 (env->scale_x == 1) ? ++curr_x : --curr_x;
             }
         }
-        ++env->tmpdebug;
+        ++env->color;
     }
 }
 

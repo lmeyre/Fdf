@@ -131,6 +131,10 @@ int            fdf_key(int key, t_env *env)
     {
         reset_image(env);
     }
+    else if (key == C)
+    {
+        env->color_option *= -1;
+    }
 
     //mlx_clear_window(env->mlx_ptr, env->win_ptr);
     //mlx_map_point(env);

@@ -39,7 +39,7 @@ t_env       *initialize_env(void)
     env->s_l = 0;
     env->endian = 0;
     env->anim_val = 100;
-    env->color_max = 0x333300;
+    env->color_option = -1;
     // ne pas initialize map min et max
     return (env);
 }
