@@ -17,7 +17,9 @@ int			fdf(t_env *env)
 	env->mlx_ptr = mlx_init();
 	env->win_width = env->map_width * 10 + 500;
 	env->win_height = env->map_height * 10 + 500;
-	mlx_window_size(env, 0, 0);
+	env->win_width > 2550 ? env->win_width = 2550 : 0;
+	env->win_height > 1400 ? env->win_height = 1400 : 0;
+	mlx_window_size(env, 0, 0, 0);
 	env->img_ptr = mlx_new_image(env->mlx_ptr, env->win_width, env->win_height);
 	env->img = mlx_get_data_addr(env->img_ptr,
 			&(env->bpp), &(env->s_l), &(env->endian));
@@ -27,9 +29,8 @@ int			fdf(t_env *env)
 	return (1);
 }
 
-void		mlx_window_size(t_env *env, int valx, int valy)
+void		mlx_window_size(t_env *env, int valx, int valy, int end_x)
 {
-	int end_x;
 	int end_y;
 
 	valx = ((env->map_width - 1) * env->spacing);
@@ -52,6 +53,7 @@ void		mlx_window_size(t_env *env, int valx, int valy)
 		end_x = valx - valy;
 		end_y = (valx + valy) / 2;
 	}
+	env->origin_spacing = env->spacing;
 	env->win_ptr = mlx_new_window(env->mlx_ptr,
 				env->win_width, env->win_height, "fdf");
 }
@@ -78,7 +80,7 @@ void		reset_image(t_env *env)
 	env->center = 42;
 	env->decale_x = 0;
 	env->decale_y = 0;
-	env->spacing = 10;
+	env->spacing = env->origin_spacing;
 	env->multiply = 1;
 	while (env->lst->prev)
 		env->lst = env->lst->prev;

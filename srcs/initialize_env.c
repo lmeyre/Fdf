@@ -60,6 +60,7 @@ t_env		*initialize_env(void)
 	env->add_y = 0;
 	env->anim_val = 100;
 	env->color_option = -1;
+	env->origin_spacing = 10;
 	help_initialize(env);
 	return (env);
 }

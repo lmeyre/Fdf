@@ -38,7 +38,7 @@ DEBUG = -g -fsanitize=address
 all: $(NAME)
 
 $(NAME): $(BIN) $(LIB) $(HEADER) $(MAKE)
-	@ gcc $(FLAGS) -I /usr/local/include -o $(NAME) $(BIN) -L /usr/local/lib/ -I $(LIBDIR) -I $(HEADER_DIR) $(LIB) -lmlx -framework OpenGL -framework AppKit
+	@ gcc $(FLAGS) -o $(NAME) $(BIN) -I $(LIBDIR) -I $(HEADER_DIR) $(LIB) -lmlx -framework OpenGL -framework AppKit
 
 %.o: %.c
 	@ gcc $(FLAGS) -o $@ -c $< -I $(HEADER_DIR)
@@ -49,13 +49,13 @@ $(LIB):
 mrc: little_make clean
 
 little_make: $(BIN) $(HEADER) $(MAKE)
-	@ gcc $(FLAGS) -I /usr/local/include -o $(NAME) $(BIN) -L /usr/local/lib/ -I $(LIBDIR) -I $(HEADER_DIR) $(LIB) -lmlx -framework OpenGL -framework AppKit
+	@ gcc $(FLAGS)  -o $(NAME) $(BIN) -I $(LIBDIR) -I $(HEADER_DIR) $(LIB) -lmlx -framework OpenGL -framework AppKit
 
 visi: $(BIN) $(LIB) $(HEADER) $(MAKE)
-	gcc $(FLAGS) -I /usr/local/include -o $(NAME) $(BIN) -L /usr/local/lib/ -I $(LIBDIR) -I $(HEADER_DIR) $(LIB) -lmlx -framework OpenGL -framework AppKit
+	gcc $(FLAGS)  -o $(NAME) $(BIN) -I $(LIBDIR) -I $(HEADER_DIR) $(LIB) -lmlx -framework OpenGL -framework AppKit
 
 debug: $(BIN) $(LIB) $(HEADER) $(MAKE)
-	@ gcc $(FLAGS) $(DEBUG) -I /usr/local/include -o $(NAME) $(BIN) -L /usr/local/lib/ -I $(LIBDIR) -I $(HEADER_DIR) $(LIB) -lmlx -framework OpenGL -framework AppKit
+	@ gcc $(FLAGS) $(DEBUG)  -o $(NAME) $(BIN) -I $(LIBDIR) -I $(HEADER_DIR) $(LIB) -lmlx -framework OpenGL -framework AppKit
 
 clean:
 	@ rm -f $(BIN)

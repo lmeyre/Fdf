@@ -80,15 +80,19 @@ int			color_range(int height)
 
 void		perfect_center(t_env *env)
 {
-	int valx;
-	int valy;
+	int tmpx;
+	int tmpy;
 	int end_x;
 	int end_y;
 
-	valx = ((env->map_width - 1) * env->spacing);
-	valy = ((env->map_height - 1) * env->spacing);
-	end_x = valx - valy;
-	end_y = (valx + valy) / 2;
-	env->add_x = env->win_width / 2 - end_x / 2;
-	env->add_y = env->win_height / 2 - end_y / 2;
+	end_x = ((env->map_width - 1) * env->spacing)
+	- ((env->map_height - 1) * env->spacing);
+	end_y = (((env->map_width - 1) * env->spacing)
+	+ ((env->map_height - 1) * env->spacing)) / 2;
+	tmpx = (env->map_width * 10 + 500);
+	tmpy = (env->map_height * 10 + 500);
+	tmpx > 2550 ? tmpx = 2550 : 0;
+	tmpy > 1400 ? tmpy = 1400 : 0;
+	env->add_x = tmpx / 2 - end_x / 2;
+	env->add_y = tmpy / 2 - end_y / 2;
 }

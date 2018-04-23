@@ -28,6 +28,7 @@ typedef struct		s_env
 	char			*img;
 	int				**array;
 	int				**origin_array;
+	int				origin_spacing;
 	int				map_width;
 	int				map_height;
 	int				win_width;
@@ -105,7 +106,7 @@ int					read_map(t_env *env, char **argv);
 void				get_map_value(int fd, t_env *env, int i, int j);
 void				get_map_dimension(char **argv,
 					t_env *env, int link, int fd);
-void				mlx_window_size(t_env *env, int valx, int valy);
+void				mlx_window_size(t_env *env, int valx, int valy, int end_x);
 void				ft_bresenham(t_env *env);
 int					fake_trace(t_env *env, int fault, int dx, int dy);
 int					fdf_key(int key, t_env *env);
