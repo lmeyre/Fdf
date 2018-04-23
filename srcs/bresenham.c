@@ -50,7 +50,7 @@ static void		bres_trace(t_env *env, int amount, int color_start)
 	final_color = color_range(env->end_z);
 	while (1)
 	{
-		if (env->color_option == 1)
+		if (env->color_option == 1 && amount != 0)
 			manage_color(base_color, final_color, &color_start, amount);
 		image_set_pixel(env, curr_x, curr_y, color_start);
 		if (curr_x == env->pt2_x && curr_y == env->pt2_y)

@@ -103,8 +103,7 @@ void		join_100(t_env *env, int key)
 	mlx_clear_window(env->mlx_ptr, env->win_ptr);
 	if (env->img)
 		ft_bzero(env->img, env->win_width * env->win_height * 4);
-	if (env->spacing <= 0)
-		env->spacing = 1;
+	(env->spacing <= 0) ? env->spacing = 1 : 0;
 	if (key == W)
 		mlx_join_point_percent(env, env->anim_val, 0, 0);
 	else if (key == Q)

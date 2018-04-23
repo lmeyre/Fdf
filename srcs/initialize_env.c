@@ -72,6 +72,8 @@ void		manage_color(int base_color,
 	if (base_color == final_color)
 		return ;
 	difference = ft_abs(base_color - final_color);
+	if (amount == 0)
+		ft_printf("CA VA CRSH\n\n");
 	if (base_color > final_color)
 	{
 		*color -= difference / amount;

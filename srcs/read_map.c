@@ -17,6 +17,7 @@ static void		get_map_height(t_env *env, char **argv, int *fd)
 	char	*str;
 
 	env->tmp = 0;
+	str = NULL;
 	*fd = open(argv[1], O_RDONLY);
 	if (*fd == -1)
 		exit(EXIT_FAILURE);
@@ -25,6 +26,7 @@ static void		get_map_height(t_env *env, char **argv, int *fd)
 		++(env->map_height);
 		ft_strdel(&str);
 	}
+	ft_strdel(&str);
 	close(*fd);
 	*fd = open(argv[1], O_RDONLY);
 	if (*fd == -1)
@@ -59,6 +61,7 @@ void			get_map_dimension(char **argv, t_env *env, int link, int fd)
 	while (get_next_line(fd, &str))
 	{
 		fill_map_dimension(env, fd, &width, str);
+		ft_strdel(&str);
 		if (!(env->lst))
 		{
 			if (!(env->lst = ft_lst_new(sizeof(t_valist*))))
@@ -72,8 +75,8 @@ void			get_map_dimension(char **argv, t_env *env, int link, int fd)
 		else
 			assign_value(env, width, link);
 		++link;
-		ft_strdel(&str);
 	}
+	ft_strdel(&str);
 	close(fd);
 }
 
@@ -110,9 +113,10 @@ void			get_map_value(int fd, t_env *env, int i, int j)
 			env->origin_array[j][i] = env->tmp;
 			++i;
 		}
-		free(tab);
+		ft_free_strtab(&tab);
 		++j;
 		ft_strdel(&str);
 		i = 0;
 	}
+	ft_strdel(&str);
 }
