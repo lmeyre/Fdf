@@ -12,60 +12,67 @@
 
 #include "fdf.h"
 
-void		mlx_join_point_percent(t_env *env, int percent) // on va faire , on parcourst tout les point et pour chqaue point on fait un lien avec celui qui est en bas + a droite
+static void	join_point_percent_right(t_env *env, int percent, int i, int j)
 {
-	int i;
-	int j;
-	int val_x;
-	int val_y;
+	int tmp;
 	int height;
 
-	if (env->spacing <= 0)
-		env->spacing = 1;
 	height = env->multiply * env->spacing;
-	i = 0;
-	j = 0;
+	if ((j + 1) < LST->lenght)
+	{
+		tmp = (env->val_x - env->val_y) - env->val_x;
+		env->pt1_x = env->val_x + (tmp * percent / 100) + env->decale_x;
+		tmp = ((env->val_y + env->val_x) / 2) - env->val_y;
+		env->pt1_y = env->val_y + (tmp * percent / 100) + env->decale_y
+		- (env->array[i][j] * height) * percent / 100;
+		tmp = (env->val_x2 - env->val_y) - env->val_x2;
+		env->pt2_x = env->val_x2 + (tmp * percent / 100) + env->decale_x;
+		tmp = ((env->val_y + env->val_x2) / 2) - env->val_y;
+		env->pt2_y = env->val_y + (tmp * percent / 100) + env->decale_y
+		- (env->array[i][j + 1] * height) * percent / 100;
+		env->start_z = (env->array[i][j]);
+		env->end_z = (env->array[i][j + 1]);
+		ft_bresenham(env);
+	}
+}
 
-	int val_x2;
-	int val_y2;
+static void	join_point_percent_bottom(t_env *env, int percent, int i, int j)
+{
+	int tmp;
+	int height;
+
+	height = env->multiply * env->spacing;
+	if ((i + 1) < env->map_height && (env->lst->next
+		&& (j < ((t_valist*)(env->lst->next->content))->lenght)))
+	{
+		tmp = (env->val_x - env->val_y) - env->val_x;
+		env->pt1_x = env->val_x + (tmp * percent / 100) + env->decale_x;
+		tmp = ((env->val_y + env->val_x) / 2) - env->val_y;
+		env->pt1_y = env->val_y + (tmp * percent / 100) + env->decale_y
+		- (env->array[i][j] * height) * percent / 100;
+		tmp = (env->val_x - env->val_y2) - env->val_x;
+		env->pt2_x = env->val_x + (tmp * percent / 100) + env->decale_x;
+		tmp = ((env->val_y2 + env->val_x) / 2) - env->val_y2;
+		env->pt2_y = env->val_y2 + (tmp * percent / 100) + env->decale_y
+		- (env->array[i + 1][j] * height) * percent / 100;
+		env->start_z = (env->array[i][j]);
+		env->end_z = (env->array[i + 1][j]);
+		ft_bresenham(env);
+	}
+}
+
+void		mlx_join_point_percent(t_env *env, int percent, int i, int j)
+{
 	while (i < env->map_height)
 	{
 		while (j < LST->lenght)
 		{
-			val_x = j * env->spacing;
-			val_y = i * env->spacing;
-			int tmpp;
-			val_x2 = (j + 1) * env->spacing;
-			val_y2 = (i + 1) * env->spacing;
-
-			if ((j + 1) < LST->lenght)
-			{
-				tmpp = (val_x - val_y) - val_x;
-				env->pt1_x = val_x + (tmpp * percent / 100) + env->decale_x;
-				tmpp = ((val_y + val_x) / 2) - val_y;
-				env->pt1_y = val_y + (tmpp* percent / 100) + env->decale_y - (env->array[i][j] * height) * percent / 100;
-				tmpp = (val_x2 - val_y) - val_x2;
-				env->pt2_x = val_x2 + ( tmpp* percent / 100) + env->decale_x;
-				tmpp = ((val_y + val_x2) / 2) - val_y;
-				env->pt2_y = val_y + (tmpp * percent / 100) + env->decale_y - (env->array[i][j + 1] * height) * percent / 100;
-				env->start_z = (env->array[i][j]);
-				env->end_z = (env->array[i][j + 1]);
-				ft_bresenham(env);
-			}
-			if ((i + 1) < env->map_height && (env->lst->next && (j < ((t_valist*)(env->lst->next->content))->lenght)))
-			{
-				tmpp = (val_x - val_y) - val_x;
-				env->pt1_x = val_x + (tmpp* percent / 100) + env->decale_x;
-				tmpp = ((val_y + val_x) / 2) - val_y;
-				env->pt1_y = val_y + (tmpp* percent / 100) + env->decale_y - (env->array[i][j] * height) * percent / 100;
-				tmpp = (val_x - val_y2) - val_x;
-				env->pt2_x = val_x + ( tmpp* percent / 100) + env->decale_x;
-				tmpp = ((val_y2 + val_x) / 2) - val_y2;
-				env->pt2_y = val_y2 + (tmpp * percent / 100) + env->decale_y - (env->array[i + 1][j] * height) * percent / 100;
-				env->start_z = (env->array[i][j]);
-				env->end_z = (env->array[i + 1][j]);
-				ft_bresenham(env);
-			}
+			env->val_x = j * env->spacing;
+			env->val_y = i * env->spacing;
+			env->val_x2 = (j + 1) * env->spacing;
+			env->val_y2 = (i + 1) * env->spacing;
+			join_point_percent_right(env, percent, i, j);
+			join_point_percent_bottom(env, percent, i, j);
 			++j;
 		}
 		if (env->lst->next)
@@ -96,12 +103,13 @@ void		join_100(t_env *env, int key)
 	mlx_clear_window(env->mlx_ptr, env->win_ptr);
 	if (env->img)
 		ft_bzero(env->img, env->win_width * env->win_height * 4);
+	if (env->spacing <= 0)
+		env->spacing = 1;
 	if (key == W)
-		mlx_join_point_percent(env, env->anim_val);
+		mlx_join_point_percent(env, env->anim_val, 0, 0);
 	else if (key == Q)
-		mlx_join_point_percent_effect(env, env->anim_val);
+		mlx_join_point_percent_effect(env, env->anim_val, 0, 0);
 	mlx_put_image_to_window(env, env->win_ptr, env->img_ptr, 0, 0);
-	int 		usleep(useconds_t usec);
 }
 
 int			animate_isometric(t_env *env)

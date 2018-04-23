@@ -33,6 +33,10 @@ static void	help_initialize(t_env *env)
 	env->bpp = 0;
 	env->s_l = 0;
 	env->endian = 0;
+	env->val_x = 0;
+	env->val_y = 0;
+	env->val_x2 = 0;
+	env->val_y2 = 0;
 }
 
 t_env		*initialize_env(void)

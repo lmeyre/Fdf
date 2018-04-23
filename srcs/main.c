@@ -16,12 +16,12 @@ int			main(int argc, char **argv)
 {
 	t_env	*env;
 
-	if (argc != 2) // gerer lerreur correctement
+	if (argc != 2)
 		return (0);
 	env = initialize_env();
 	read_map(env, argv);
 	fdf(env);
-	return (0);
+	exit(EXIT_SUCCESS);
 }
 
 int			read_map(t_env *env, char **argv)

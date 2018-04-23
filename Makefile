@@ -19,8 +19,6 @@ SRCS = $(addprefix srcs/, bresenham.c fdf.c initialize_env.c main.c mlx.c read_m
 
 SRCS_DIR = srcs
 
-BIN_DIR = bin
-
 BIN = $(SRCS:.c=.o)
 
 HEADER = includes/fdf.h
@@ -57,7 +55,7 @@ visi: $(BIN) $(LIB) $(HEADER) $(MAKE)
 	gcc $(FLAGS) -I /usr/local/include -o $(NAME) $(BIN) -L /usr/local/lib/ -I $(LIBDIR) -I $(HEADER_DIR) $(LIB) -lmlx -framework OpenGL -framework AppKit
 
 debug: $(BIN) $(LIB) $(HEADER) $(MAKE)
-	@ gcc $(FLAGS) -I /usr/local/include $(DEBUG) -o $(NAME) $(BIN) -L /usr/local/lib/ -I $(LIBDIR) -I $(HEADER_DIR) $(LIB) -lmlx -framework OpenGL -framework AppKit
+	@ gcc $(FLAGS) $(DEBUG) -I /usr/local/include -o $(NAME) $(BIN) -L /usr/local/lib/ -I $(LIBDIR) -I $(HEADER_DIR) $(LIB) -lmlx -framework OpenGL -framework AppKit
 
 clean:
 	@ rm -f $(BIN)

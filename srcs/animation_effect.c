@@ -1,73 +1,85 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   animation_effect.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lmeyre <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/23 23:31:48 by lmeyre            #+#    #+#             */
+/*   Updated: 2018/04/23 23:32:03 by lmeyre           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
-
-void	mlx_join_point_percent_effect(t_env *env, int percent) // on va faire , on parcourst tout les point et pour chqaue point on fait un lien avec celui qui est en bas + a droite
+static void	join_point_percent_effect_right(t_env *env,
+			int percent, int i, int j)
 {
-	int i;
-	int j;
-	int val_x;
-	int val_y;
 	int height;
+	int tmp;
 
-
-	env->tmp = ft_abs(env->map_max) - ft_abs(env->map_min);// remoove
-	if (env->spacing <= 0)
-		env->spacing = 1;
 	height = env->multiply * env->spacing;
-	i = 0;
-	j = 0;
-
-	int val_x2;
-	int val_y2;
-	while (i < env->map_height) // i = y
+	if ((j + 1) < LST->lenght)
 	{
-		while (j < LST->lenght) // j=  x
+		tmp = env->val_x - env->val_y + env->decale_x;
+		env->pt1_x = env->val_x + (tmp * percent / 100) + env->decale_x;
+		tmp = (env->val_y + env->val_x) / 2 + env->decale_y
+		- (env->array[i][j] * height);
+		env->pt1_y = env->val_y + (tmp * percent / 100) + env->decale_y
+		- (env->array[i][j] * height) * percent / 100;
+		tmp = env->val_x2 - env->val_y + env->decale_x;
+		env->pt2_x = env->val_x2 + (tmp * percent / 100) + env->decale_x;
+		tmp = (env->val_y + env->val_x2) / 2 + env->decale_y
+		- (env->array[i][j + 1] * height);
+		env->pt2_y = env->val_y + (tmp * percent / 100) + env->decale_y
+		- (env->array[i][j + 1] * height) * percent / 100;
+		env->start_z = (env->array[i][j]);
+		env->end_z = (env->array[i][j + 1]);
+		ft_bresenham(env);
+	}
+}
+
+static void	join_point_percent_effect_bottom(t_env *env,
+			int percent, int i, int j)
+{
+	int height;
+	int tmp;
+
+	height = env->multiply * env->spacing;
+	if ((i + 1) < env->map_height && (env->lst->next
+		&& (j < ((t_valist*)(env->lst->next->content))->lenght)))
+	{
+		tmp = env->val_x - env->val_y + env->decale_x;
+		env->pt1_x = env->val_x + (tmp * percent / 100) + env->decale_x;
+		tmp = (env->val_y + env->val_x) / 2 + env->decale_y
+		- (env->array[i][j] * height);
+		env->pt1_y = env->val_y + (tmp * percent / 100) + env->decale_y
+		- (env->array[i][j] * height) * percent / 100;
+		tmp = env->val_x - env->val_y2 + env->decale_x;
+		env->pt2_x = env->val_x + (tmp * percent / 100) + env->decale_x;
+		tmp = (env->val_y2 + env->val_x) / 2 + env->decale_y
+		- (env->array[i + 1][j] * height);
+		env->pt2_y = env->val_y2 + (tmp * percent / 100) + env->decale_y
+		- (env->array[i + 1][j] * height) * percent / 100;
+		env->start_z = (env->array[i][j]);
+		env->end_z = (env->array[i + 1][j]);
+		ft_bresenham(env);
+	}
+}
+
+void		mlx_join_point_percent_effect(t_env *env,
+			int percent, int i, int j)
+{
+	while (i < env->map_height)
+	{
+		while (j < LST->lenght)
 		{
-			val_x = j * env->spacing;
-			val_y = i * env->spacing;
-			int tmpp;
-			val_x2 = (j + 1) * env->spacing;
-			val_y2 = (i + 1) * env->spacing;
-
-			if ((j + 1) < LST->lenght)
-			{
-				tmpp = val_x - val_y + env->decale_x;
-				env->pt1_x = val_x + (tmpp* percent / 100) + env->decale_x;
-
-				tmpp = (val_y + val_x)  / 2 + env->decale_y - (env->array[i][j] * height);;
-				env->pt1_y = val_y + (tmpp* percent / 100) + env->decale_y - (env->array[i][j] * height) * percent / 100; // !!!
-
-				tmpp = val_x2 - val_y + env->decale_x;
-				env->pt2_x = val_x2 + ( tmpp* percent / 100) + env->decale_x;
-
-				tmpp = (val_y + val_x2) / 2 + env->decale_y - (env->array[i][j + 1] * height);
-				env->pt2_y = val_y + (tmpp * percent / 100) + env->decale_y - (env->array[i][j + 1] * height) * percent / 100; // !!!
-
-
-				env->start_z = (env->array[i][j]);
-				env->end_z = (env->array[i][j + 1]);
-				ft_bresenham(env);
-			}
-			if ((i + 1) < env->map_height && (env->lst->next && (j < ((t_valist*)(env->lst->next->content))->lenght))) // bien verifier celle la particluierement
-			{
-				tmpp = val_x - val_y + env->decale_x;
-				env->pt1_x = val_x + (tmpp* percent / 100) + env->decale_x;
-
-				tmpp = (val_y + val_x)  / 2  + env->decale_y - (env->array[i][j] * height);
-				env->pt1_y = val_y + (tmpp* percent / 100) + env->decale_y - (env->array[i][j] * height) * percent / 100; // !!!
-
-				tmpp = val_x - val_y2 + env->decale_x;
-				env->pt2_x = val_x + ( tmpp* percent / 100) + env->decale_x;
-
-				tmpp = (val_y2 + val_x) / 2 + env->decale_y - (env->array[i + 1][j] * height);
-				env->pt2_y = val_y2 + (tmpp * percent / 100) + env->decale_y - (env->array[i + 1][j] * height) * percent / 100; // !!!
-			
-			
-				env->start_z = (env->array[i][j]);
-				env->end_z = (env->array[i + 1][j]);
-				
-				ft_bresenham(env);
-			}
+			env->val_x = j * env->spacing;
+			env->val_y = i * env->spacing;
+			env->val_x2 = (j + 1) * env->spacing;
+			env->val_y2 = (i + 1) * env->spacing;
+			join_point_percent_effect_right(env, percent, i, j);
+			join_point_percent_effect_bottom(env, percent, i, j);
 			++j;
 		}
 		if (env->lst->next)
@@ -79,8 +91,7 @@ void	mlx_join_point_percent_effect(t_env *env, int percent) // on va faire , on 
 		env->lst = env->lst->prev;
 }
 
-
-int        animate_isometric_effect(t_env *env)
+int			animate_isometric_effect(t_env *env)
 {
 	join_100(env, Q);
 	return (0);
