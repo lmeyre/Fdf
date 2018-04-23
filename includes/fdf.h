@@ -50,6 +50,8 @@ typedef struct      s_env
 	int				endian;
 	int				anim_val;
 	int				color_option;
+	int				bres_x;
+	int				bres_y;
 
 }                   t_env;
 
@@ -67,7 +69,12 @@ t_env       *initialize_env(void);
 void     help_value(int value, t_env *env);
 void    man_fdf(t_env *env);
 int 	color_range(int height);
+void	manage_color(int base_color,
+		int final_color, int *color, int amount);
 void            reset_image(t_env *env);
+void    assign_value(t_env *env, int width, int link);
+void		key_moove(int key, t_env *env);
+void perfect_center(t_env *env);
 
 /*
 ** Images
@@ -82,8 +89,11 @@ void	image_set_pixel(t_env *env, int x, int y, int color);
 
 int			fdf(t_env *env);
 int			read_map(t_env *env, char **argv);
-void		mlx_window_size(t_env *env);
+void		get_map_value(int fd, t_env *env, int i, int j);
+void			get_map_dimension(char **argv, t_env *env, int link, int fd);
+void		mlx_window_size(t_env *env, int valx, int valy);
 void    	ft_bresenham(t_env *env);
+int		fake_trace(t_env *env, int fault, int dx, int dy);
 int			fdf_key(int key, t_env *env);
 void		mlx_join_point(t_env *env);
 int        animate_isometric(t_env *env);

@@ -15,7 +15,7 @@ NAME = fdf
 
 FLAGS = -Wall -Werror -Wextra
 
-SRCS = $(addprefix srcs/, bresenham.c fdf.c initialize_env.c main.c mlx.c read_map.c trigger_hook.c util.c animation.c animation_effect.c fdf_image.c)\
+SRCS = $(addprefix srcs/, bresenham.c fdf.c initialize_env.c main.c mlx.c read_map.c trigger_hook.c util.c animation.c animation_effect.c fdf_image.c bres_size.c)\
 
 SRCS_DIR = srcs
 
