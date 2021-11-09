@@ -1,4 +1,7 @@
 # Fdf
+
+![42.fdf map](/img/42Fdf.png)
+
 fdf is a graphics project wich will show you a map in wireframe.
 
 A map should be given, with coordinate, wich will tell the wireframe where to go, using X, Y and Z axis.
