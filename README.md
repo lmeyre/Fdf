@@ -1,6 +1,6 @@
 # Fdf
 
-![42.fdf map](/img/42Fdf.png)
+![42.fdf map](/img/42fdf.png)
 
 fdf is a graphics project wich will show you a map in wireframe.
 
